@@ -5,7 +5,7 @@ import {Action} from "./Action";
  * 统一响应对象
  */
 
-export interface ApiResp<T> {
+export interface ApiResp<T=any> {
 
     /**
      * 请求结果code 0表示成功

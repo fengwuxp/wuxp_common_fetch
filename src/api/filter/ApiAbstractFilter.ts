@@ -5,17 +5,17 @@ import {PostHandlerResult} from "./model/PostHandlerResult";
 /**
  * api filter abstract
  */
-export default abstract class ApiAbstractFilter implements ApiFilter {
+export default abstract class ApiAbstractFilter<T=any, R> implements ApiFilter<T, R> {
 
 
     constructor() {
     }
 
-    public preHandle(params: any): boolean | Promise<boolean> {
+    public preHandle(options: T): boolean | Promise<boolean> {
         return true;
     }
 
-    public postHandle(data: any,context?: any): boolean {
+    public postHandle(data: R, options: T): boolean {
         return true;
     }
 }

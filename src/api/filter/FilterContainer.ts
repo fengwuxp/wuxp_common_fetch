@@ -19,6 +19,7 @@ const DEFAULT_FILTERS: Array<FilterItem> = new Array<FilterItem>();
  * @param {FilterItem} filter
  */
 const addFirst = (filter: FilterItem) => {
+    filterHasName(filter);
     if (!filterIsExist(FILTERS, filter)) {
         FILTERS.unshift(filter);
     }
@@ -30,6 +31,7 @@ const addFirst = (filter: FilterItem) => {
  *
  */
 const addLast = (filter: FilterItem) => {
+    filterHasName(filter);
     if (!filterIsExist(FILTERS, filter)) {
         FILTERS.push(filter);
     }
@@ -40,6 +42,8 @@ const addLast = (filter: FilterItem) => {
  * @param {FilterItem} filter
  */
 const addDefaultFilter = (filter: FilterItem) => {
+
+    filterHasName(filter);
     if (!filterIsExist(DEFAULT_FILTERS, filter)) {
         DEFAULT_FILTERS.push(filter);
     }
@@ -47,9 +51,20 @@ const addDefaultFilter = (filter: FilterItem) => {
 };
 
 function filterIsExist(fliters: Array<FilterItem>, filter: FilterItem) {
+
     return fliters.some((item) => {
         return item.filterName === filter.filterName;
     })
+}
+
+/**
+ * filter是否有名称
+ * @param {FilterItem} filter
+ */
+function filterHasName(filter: FilterItem) {
+    if (!filter.filterName) {
+        filter.filterName = filter.filter.constructor.name;
+    }
 }
 
 

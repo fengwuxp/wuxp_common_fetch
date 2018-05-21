@@ -1,27 +1,32 @@
 import {NeedSignFilter} from "../../filter/default/NeedSignFilter";
 import {MemberSessionManager, NeedLoginFilter} from "../../filter/default/es/NeedLoginFilter";
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
-
-import ApiFetchBuilder from "./ApiFetchBuilder";
 import {RespDataHandleFilter} from "../../filter/default/RespDataHandleFilter";
 import {buildApiClientProxy} from "./BuildApiClientProxy";
+import {FilterItem} from "../../filter/model/FilterItem";
+import EsServiceSimpleProxyFactory from "./EsServiceSimpleProxyFactory";
+import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
 
 const MemberSessionManager: MemberSessionManager = require("../../../../../../src/session/MemberSessionManagerImpl").default;
 
-/**
- * 构建默认可以换
- * @type {ApiBuild}
- */
-const api: any = ApiFetchBuilder.builder().registerDefaultFilter({
-    filter: new NeedSignFilter(GlobalApiConfig.CLIENT_ID,GlobalApiConfig.CLIENT_SECRET, GlobalApiConfig.CHANNEL_CODE),
-    filterName: "NeedSignFilter"
-}).registerDefaultFilter({
-    filter: new NeedLoginFilter(MemberSessionManager),
-    filterName: "NeedLoginFilter",
-}).registerDefaultFilter({
-    filter: new RespDataHandleFilter(),
-    filterName: "RespDataHandleFilter"
-}).build();
+
+const defaultFilter: Array<FilterItem> = [
+    {
+        filter: new NeedSignFilter(GlobalApiConfig.CLIENT_ID, GlobalApiConfig.CLIENT_SECRET, GlobalApiConfig.CHANNEL_CODE)
+    },
+    {
+        filter: new NeedLoginFilter(MemberSessionManager)
+    },
+    {
+        filter: new RespDataHandleFilter()
+    }
+];
+
+//http请求处理错误处理者
+const httpErrorHandler: FetchHttpErrorHandler = new FetchHttpErrorHandler();
+
+
+const api = EsServiceSimpleProxyFactory.newProxyInstances(httpErrorHandler, defaultFilter);
 
 
 /**
@@ -40,4 +45,24 @@ export default class EsServiceProxyFactory {
 
         return buildApiClientProxy(targetService, api);
     }
+
+    /**
+     * 添加一个过滤器到最前面
+     * @param {FilterItem} filter
+     * @return {EsServiceProxyFactory}
+     */
+    public static addFilterByBegin(filter: FilterItem) {
+        defaultFilter.unshift(filter);
+        return EsServiceProxyFactory;
+    }
+
+    /**
+     * 添加一个过滤器到最最后
+     * @param {FilterItem} filter
+     */
+    public static addFilterByEnd(filter: FilterItem) {
+        defaultFilter.push(filter);
+        return EsServiceProxyFactory;
+    }
+
 }

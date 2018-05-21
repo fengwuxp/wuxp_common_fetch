@@ -16,7 +16,7 @@ export default class FilterFetchHandlerByAsync {
      */
     public preHandle = (options: BaseApiOptions): Promise<boolean> => {
 
-        return this.doFilter(options, "preHandle");
+        return this.doFilter(options, "preHandle",null);
     };
 
     /**
@@ -37,7 +37,7 @@ export default class FilterFetchHandlerByAsync {
      * @param params 参数
      * @return {Promise<boolean|PostHandlerResult>}
      */
-    private async doFilter(options: BaseApiOptions, fnName: string, params?: any): Promise<any> {
+    private async doFilter(options: BaseApiOptions, fnName: string, params: any): Promise<any> {
         const filterItems = urlParser(options, "");
         let i = 0;
 
@@ -57,7 +57,7 @@ export default class FilterFetchHandlerByAsync {
         } else {
             while (i < filterItems.length) {
                 let apiFilter = filterItems[i].filter;
-                result = await apiFilter.postHandle(params);
+                result = await apiFilter.postHandle(params,options);
                 if (!result) {
                     return {
                         isSuccess: false,

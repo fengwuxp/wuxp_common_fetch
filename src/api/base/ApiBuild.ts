@@ -1,5 +1,5 @@
 import {FilterItem} from "../filter/model/FilterItem";
-import {addLast, addFirst,addDefaultFilter} from "../filter/FilterContainer";
+import {addLast, addFirst, addDefaultFilter} from "../filter/FilterContainer";
 
 /**
  * 构建api client
@@ -47,7 +47,8 @@ export abstract class ApiBuild<T> {
      * 注册默认filter
      * @param {FilterItem} item
      */
-    registerDefaultFilter=(item: FilterItem)=>{
+    registerDefaultFilter = (item: FilterItem) => {
+
         addDefaultFilter(item);
         return this;
     };

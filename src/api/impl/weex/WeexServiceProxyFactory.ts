@@ -5,6 +5,7 @@ import GlobalApiConfig from "../../../config/GlobalAipConfig";
 import {NeedNetworkFilter} from "../../filter/default/weex/NeedNetworkFilter";
 import ApiClientProxyFactory from "../../base/ApiClientProxyFactory";
 import {RespDataHandleFilter} from "../../filter/default/RespDataHandleFilter";
+import {NeedProgressBarFilter} from "../../filter/default/weex/NeedProgressBarFilter";
 
 const MemberSessionManager: MemberSessionManager = require("../../../../../../src/session/MemberSessionManagerImpl").default;
 
@@ -14,17 +15,15 @@ const MemberSessionManager: MemberSessionManager = require("../../../../../../sr
  * @type {ApiBuild}
  */
 const api: any = ApiWeexBuild.registerDefaultFilter({
+    filter: new NeedProgressBarFilter(),
+}).registerDefaultFilter({
     filter: new NeedSignFilter(GlobalApiConfig.CLIENT_SECRET, GlobalApiConfig.CHANNEL_CODE, true),
-    filterName: "NeedSignFilter"
 }).registerDefaultFilter({
     filter: new NeedNetworkFilter(),
-    filterName: "NeedNetworkFilter",
 }).registerDefaultFilter({
     filter: new NeedLoginFilter(MemberSessionManager),
-    filterName: "NeedLoginFilter",
 }).registerDefaultFilter({
     filter: new RespDataHandleFilter(),
-    filterName: "RespDataHandleFilter"
 }).build();
 
 /**

@@ -17,7 +17,7 @@ export interface FilterItem {
      *     }
      *
      */
-    pattern ?: string | Array<string> | Array<RegExp> | UrlPattern | Function;
+    pattern?: string | Array<string> | Array<RegExp> | UrlPattern | Function;
 
     /**
      * 处理的filter
@@ -27,5 +27,5 @@ export interface FilterItem {
     /**
      * 过滤器的名称
      */
-    filterName: string;
+    filterName?: string;
 }

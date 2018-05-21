@@ -2,7 +2,7 @@ import {isFunction, isNullOrUndefined} from "util";
 import {WeexStreamOption} from "../../option/WeexStreamOption";
 import {ApiClientInterface} from "../../base/ApiClientInterface";
 import {stream} from "../../../utils/ExportWeexSdkModel";
-import {appMain} from "../../../utils/ExpotrtWeexCustomModel";
+
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
 import {DataType} from "../../enums/DataType";
 import {ReqMethod} from "../../enums/ReqMethod";
@@ -16,11 +16,6 @@ const filterHandler: FilterFetchHandlerByAsync = new FilterFetchHandlerByAsync()
 
 const IS_WEB: boolean = isWeb();
 
-/**
- * 进度条计数器，用于在同时发起多个请求时，统一控制加载进度条
- * @type {number}
- */
-let PROGRESSBAR_COUNT: number = 0;
 
 
 /**
@@ -81,7 +76,6 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
         //使用filter
         filterHandler.preHandle(option).then(() => {  //添加查询参数的处理
             let {
-                useProgressBar,
                 progressCallback,
                 callBack
             } = option;
@@ -89,14 +83,7 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
             let request = this.buildRequest(option);
             console.log("请求参数", request);
             stream.fetch(request, function (response) {
-                if (useProgressBar) {
-                    //计数器减一
-                    PROGRESSBAR_COUNT--;
-                    if (PROGRESSBAR_COUNT === 0) {
-                        //隐藏加载进度条
-                        appMain.hideProgressBar();
-                    }
-                }
+
                 /**
                  * 响应结果回调，回调函数将收到如下的 response 对象：
                  * status {number}：返回的状态码
@@ -159,7 +146,6 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
                     //过滤器处理失败
                     reject(result.resp[0]);
                 });
-
             };
             this.request(reject, options);
         });
@@ -173,15 +159,7 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
     private request = (reject: Function, options: WeexStreamOption) => {
 
         let method = ReqMethod[options.method];
-        if (options.useProgressBar) {
-            if (PROGRESSBAR_COUNT === 0) {
-                //显示加载进度条
-                appMain.showProgressBar(20, () => {
-                });
-            }
-            //计数器加一
-            PROGRESSBAR_COUNT++;
-        }
+
         this[method.toLowerCase()](options);
     };
 

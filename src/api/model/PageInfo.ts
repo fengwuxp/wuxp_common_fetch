@@ -4,7 +4,7 @@
 import {QueryType} from "../enums/QueryType";
 
 
-export interface PageInfo<T> {
+export interface PageInfo<T=any> {
 
     readonly  total: number;
 
