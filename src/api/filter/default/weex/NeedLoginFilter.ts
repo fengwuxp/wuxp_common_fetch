@@ -4,6 +4,7 @@ import ApiAbstractFilter from "../../ApiAbstractFilter";
 import {timer} from "../../../../utils/ExportWeexSdkModel";
 import {broadcast} from "../../../../utils/ExpotrtWeexCustomModel";
 import {ApiResp} from "../../../model/ApiResp";
+import {ReqMethod} from "../../../enums/ReqMethod";
 
 
 /**
@@ -40,15 +41,13 @@ export interface MemberSessionManager<T=any> {
  */
 const tokenHandle = (token: string = "", options: WeexStreamOption): void => {
     //设置token
-    if (isNullOrUndefined(options.headers)) {
-        options.queryPrams = {token};
-    } else {
+    if (options.method === ReqMethod.GET) {
+        options.queryPrams = options.queryPrams || {};
         options.queryPrams.token = token;
-    }
-    if (isNullOrUndefined(options.headers)) {
-        options.headers = {token};
     } else {
+        options.headers = options.headers || {};
         options.headers.token = token;
+
     }
 };
 

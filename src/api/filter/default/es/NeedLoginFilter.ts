@@ -3,8 +3,9 @@ import {FetchOption} from "../../../option/FetchOption";
 import ApiAbstractFilter from "../../ApiAbstractFilter";
 import {ApiResp} from "../../../model/ApiResp";
 import BroadcastPlugin from "../../../../plugins/broadcast/BroadcastPlugin";
+import {ReqMethod} from "../../../enums/ReqMethod";
 
-const broadcast=new BroadcastPlugin();
+const broadcast = new BroadcastPlugin();
 
 /**
  * 用户会话管理
@@ -40,15 +41,13 @@ export interface MemberSessionManager<T=any> {
  */
 const tokenHandle = (token: string = "", options: FetchOption | FetchOption): void => {
     //设置token
-    if (isNullOrUndefined(options.headers)) {
-        options.queryPrams = {token};
-    } else {
+    if (options.method === ReqMethod.GET) {
+        options.queryPrams = options.queryPrams || {};
         options.queryPrams.token = token;
-    }
-    if (isNullOrUndefined(options.headers)) {
-        options.headers = {token};
     } else {
+        options.headers = options.headers || {};
         options.headers.token = token;
+
     }
 };
 
@@ -56,7 +55,7 @@ const tokenHandle = (token: string = "", options: FetchOption | FetchOption): vo
 let LOGIN_BROADCAST_IS_SEND: boolean = false;
 
 
-export const AGENT_LOGIN_CATEGORY: string = "WEEX_EVENT";
+export const AGENT_LOGIN_CATEGORY: string = "NEED_LOGIN_FILTER_EVENT";
 
 export const AGENT_LOGIN_EVENT: string = "AGAIN_LOGIN";
 /**
