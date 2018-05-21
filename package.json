@@ -12,6 +12,9 @@
     "weex",
     "fetch"
   ],
+  "scripts": {
+    "run_publish": "npm publish"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/fengwuxp/wuxp_common_fetch.git"

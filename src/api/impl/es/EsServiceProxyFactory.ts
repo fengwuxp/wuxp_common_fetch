@@ -1,5 +1,5 @@
 import {NeedSignFilter} from "../../filter/default/NeedSignFilter";
-import {MemberSessionManager, NeedLoginFilter} from "../../filter/default/NeedLoginFilter";
+import {MemberSessionManager, NeedLoginFilter} from "../../filter/default/es/NeedLoginFilter";
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
 
 import ApiFetchBuilder from "./ApiFetchBuilder";

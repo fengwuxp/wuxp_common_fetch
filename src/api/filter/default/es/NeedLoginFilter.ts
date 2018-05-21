@@ -1,37 +1,34 @@
 import {isNullOrUndefined} from "util";
-import {WeexStreamOption} from "../../option/WeexStreamOption";
-import ApiAbstractFilter from "../ApiAbstractFilter";
-import {timer} from "../../../utils/ExportWeexSdkModel";
-import {broadcast} from "../../../utils/ExpotrtWeexCustomModel";
-import {FetchOption} from "../../option/FetchOption";
-import {ApiResp} from "../../model/ApiResp";
-import {PostHandlerResult} from "../model/PostHandlerResult";
+import {FetchOption} from "../../../option/FetchOption";
+import ApiAbstractFilter from "../../ApiAbstractFilter";
+import {broadcast} from "../../../../utils/ExpotrtWeexCustomModel";
+import {ApiResp} from "../../../model/ApiResp";
 
 
 /**
  * 用户会话管理
  */
-export interface MemberSessionManager {
+export interface MemberSessionManager<T=any> {
 
     /**
      * 获取当前登录用户
      * @param  params
-     * @return {Promise<any> | any}
+     * @return {Promise<T> | any}
      */
-    getCurrentLoginMember(params?: any): Promise<any> | any;
+    getCurrentLoginMember(params?: T): Promise<T> | any;
 
     /**
      * 保存用户信息
      * @param member
-     * @return {void | Promise<any>}
+     * @return {void | Promise<T>}
      */
-    saveMember?(member: any): void | Promise<any>;
+    saveMember?(member: T): void | Promise<any>;
 
     /**
      * 移除当前登录用户
-     * @returns {void | Promise<any>}
+     * @returns {void | Promise<T>}
      */
-    removeMember(): void | Promise<any>;
+    removeMember(): void | Promise<T>;
 }
 
 
@@ -40,7 +37,7 @@ export interface MemberSessionManager {
  * @param {string} token
  * @param {WeexStreamOption} options
  */
-const tokenHandle = (token: string = "", options: FetchOption | WeexStreamOption): void => {
+const tokenHandle = (token: string = "", options: FetchOption | FetchOption): void => {
     //设置token
     if (isNullOrUndefined(options.headers)) {
         options.queryPrams = {token};
@@ -78,7 +75,7 @@ const sendLoginBroadcast = (data: any, callback: Function): void => {
     broadcast.send(AGENT_LOGIN_CATEGORY, AGENT_LOGIN_EVENT, data);
 
     //3秒后恢复标记位置
-    timer.setTimeout(() => {
+    setTimeout(() => {
         LOGIN_BROADCAST_IS_SEND = false;
     }, 3 * 1000);
 };
@@ -97,7 +94,7 @@ export class NeedLoginFilter extends ApiAbstractFilter {
         this.memberSessionManager = memberSessionManager;
     }
 
-    preHandle(options: FetchOption | WeexStreamOption): Promise<boolean> {
+    preHandle(options: FetchOption): Promise<boolean> {
 
         return new Promise((resolve = (param: any) => {
         }) => {

@@ -1,6 +1,6 @@
 import ApiWeexBuild from "./ApiWeexBuild";
 import {NeedSignFilter} from "../../filter/default/NeedSignFilter";
-import {MemberSessionManager, NeedLoginFilter} from "../../filter/default/NeedLoginFilter";
+import {MemberSessionManager, NeedLoginFilter} from "../../filter/default/weex/NeedLoginFilter";
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
 import {NeedNetworkFilter} from "../../filter/default/weex/NeedNetworkFilter";
 import ApiClientProxyFactory from "../../base/ApiClientProxyFactory";

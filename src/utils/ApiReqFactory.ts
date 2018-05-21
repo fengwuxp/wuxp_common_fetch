@@ -28,7 +28,7 @@ class ApiReqFactory {
      * 获取一个请求req对象
      * @param params 是一个对象列表
      */
-    public static newInstancesReq<T extends ApiReq>(...params): T {
+    public static newInstancesReq<T extends ApiReq>(...params: Array<T>): T {
         let reqImpl = new ReqImpl();
         return Object.assign({}, reqImpl, ...params) as T;
     };
@@ -37,7 +37,7 @@ class ApiReqFactory {
      * 获取一个查询req对象
      *@param params 是一个对象列表
      */
-    public static newInstancesQueryReq<T extends ApiQueryReq>(...params): T {
+    public static newInstancesQueryReq<T extends ApiQueryReq>(...params: Array<T>): T {
         let reqImpl = new QueryReqImpl();
         return Object.assign({}, reqImpl, ...params) as T;
     }
