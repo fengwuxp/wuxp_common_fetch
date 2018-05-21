@@ -62,12 +62,12 @@ export default class BroadcastPlugin implements EsPlugin {
 
     /**
      * 发送广播事件
-     * @param category
-     * @param eventName
-     * @param data       成功数据
-     * @param errorData  错误数据
+     * @param {string} category
+     * @param {string} eventName
+     * @param {any} data       成功数据
+     * @param {any} errorData  错误数据
      */
-    public send = (category, eventName, data, errorData): void => {
+    public send = (category: string, eventName: string, data: any, errorData?: any): void => {
 
         //保存广播数据
         const key: string = this.getEventName(category, eventName);

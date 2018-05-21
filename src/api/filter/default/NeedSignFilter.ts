@@ -11,6 +11,8 @@ import {apiSign, joinParamByReq} from "./ApiSginUtils";
 export class NeedSignFilter extends ApiAbstractFilter {
 
 
+    private clientId: string;
+
     /**
      * 签名秘钥
      */
@@ -19,17 +21,12 @@ export class NeedSignFilter extends ApiAbstractFilter {
 
     private channelCode: string;
 
-    /**
-     * 是否为weex
-     */
-    private isWeex: boolean;
 
-
-    constructor(clientSecret: string, channelCode: string, isWeex: boolean = false) {
+    constructor(clientId: string, clientSecret: string, channelCode: string) {
         super();
+        this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.channelCode = channelCode;
-        this.isWeex = isWeex;
     }
 
     preHandle(options: FetchOption | WeexStreamOption): boolean | Promise<boolean> {
@@ -41,6 +38,10 @@ export class NeedSignFilter extends ApiAbstractFilter {
             queryPrams,
             signFields,
         } = options;
+
+        data['clientId'] = this.clientId;
+        data['timestamp'] = new Date().getTime().toString();
+
         if (!isNullOrUndefined(queryPrams) && Object.keys(queryPrams).length > 0 && method === ReqMethod.GET) {
             if (url.indexOf("?") >= 0) {
                 url += "&";
@@ -52,12 +53,10 @@ export class NeedSignFilter extends ApiAbstractFilter {
         data['channelCode'] = this.channelCode;
         data['sign'] = apiSign(signFields, data, this.clientSecret);
 
-        if (!this.isWeex) {
-            let body: String = "";
-            if (!isNullOrUndefined(data)) {
-                body = joinParamByReq(data);
-                options.data = body;
-            }
+        let body: String = "";
+        if (!isNullOrUndefined(data)) {
+            body = joinParamByReq(data);
+            options.data = body;
         }
         return true;
     }

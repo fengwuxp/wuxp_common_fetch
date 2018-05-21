@@ -1,9 +1,10 @@
 import {isNullOrUndefined} from "util";
 import {FetchOption} from "../../../option/FetchOption";
 import ApiAbstractFilter from "../../ApiAbstractFilter";
-import {broadcast} from "../../../../utils/ExpotrtWeexCustomModel";
 import {ApiResp} from "../../../model/ApiResp";
+import BroadcastPlugin from "../../../../plugins/broadcast/BroadcastPlugin";
 
+const broadcast=new BroadcastPlugin();
 
 /**
  * 用户会话管理

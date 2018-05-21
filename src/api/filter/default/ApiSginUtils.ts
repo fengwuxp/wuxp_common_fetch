@@ -1,5 +1,5 @@
 import {isNullOrUndefined, isString} from "util";
-import * as md5 from "md5";
+import md5 from "md5";
 
 /**
  * ap请求时签名

@@ -68,10 +68,10 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
             option.dataType = DataType.JSONP;
         }
 
-        option.data = Object.assign(option.data, {
-            timestamp: new Date().getTime().toString(),
-            clientId: GlobalApiConfig.CLIENT_ID
-        });
+        // option.data = Object.assign(option.data, {
+        //     timestamp: new Date().getTime().toString(),
+        //     clientId: GlobalApiConfig.CLIENT_ID
+        // });
 
         //url 拼接
         if (!(option.url.startsWith("http://") || option.url.startsWith("https://"))) {

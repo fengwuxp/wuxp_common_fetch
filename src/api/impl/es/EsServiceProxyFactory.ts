@@ -13,7 +13,7 @@ const MemberSessionManager: MemberSessionManager = require("../../../../../../sr
  * @type {ApiBuild}
  */
 const api: any = ApiFetchBuilder.builder().registerDefaultFilter({
-    filter: new NeedSignFilter(GlobalApiConfig.CLIENT_SECRET, GlobalApiConfig.CHANNEL_CODE),
+    filter: new NeedSignFilter(GlobalApiConfig.CLIENT_ID,GlobalApiConfig.CLIENT_SECRET, GlobalApiConfig.CHANNEL_CODE),
     filterName: "NeedSignFilter"
 }).registerDefaultFilter({
     filter: new NeedLoginFilter(MemberSessionManager),
