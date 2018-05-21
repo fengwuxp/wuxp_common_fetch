@@ -5,7 +5,7 @@ import {PostHandlerResult} from "./model/PostHandlerResult";
 /**
  * api filter abstract
  */
-export default abstract class ApiAbstractFilter<T=any, R> implements ApiFilter<T, R> {
+export default abstract class ApiAbstractFilter<T=any, R=any> implements ApiFilter<T, R> {
 
 
     constructor() {
