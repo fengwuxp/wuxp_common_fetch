@@ -1,0 +1,47 @@
+{
+  "name": "typescript_api_sdk",
+  "version": "0.0.2",
+  "publishConfig": {
+    "registry": "http://nexus.oaknt.com:18081/repository/oak_npm_hosted/"
+  },
+  "description": "基于typeScript 封装的请求服务端的js-sdk",
+  "author": "wuxp",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "typeSctpt",
+    "weex",
+    "fetch"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fengwuxp/wuxp_common_fetch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fengwuxp/wuxp_common_fetch/issues"
+  },
+  "homepage": "https://github.com/fengwuxp/wuxp_common_fetch#readme",
+  "dependencies": {
+    "@types/node": "^9.4.6",
+    "@types/weex": "0.0.1",
+    "es5-shim": "^4.5.9",
+    "es6-promise": "^4.1.1",
+    "fetch-detector": "^1.0.1",
+    "fetch-ie8": "^1.5.0",
+    "isomorphic-fetch": "^2.2.1",
+    "md5": "^2.2.1"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.1.3",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-import": "^1.1.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "file-saver": "^1.3.8",
+    "reflect-metadata": "^0.1.10",
+    "serve": "^5.1.4",
+    "typescript": "^2.7.2",
+    "typings": "^2.1.1"
+  }
+}
