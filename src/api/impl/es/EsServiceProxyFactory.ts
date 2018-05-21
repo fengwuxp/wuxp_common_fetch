@@ -6,6 +6,7 @@ import {buildApiClientProxy} from "./BuildApiClientProxy";
 import {FilterItem} from "../../filter/model/FilterItem";
 import EsServiceSimpleProxyFactory from "./EsServiceSimpleProxyFactory";
 import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
+import ApiClientFetch from "./ApiClientFetch";
 
 const MemberSessionManager: MemberSessionManager = require("../../../../../../src/session/MemberSessionManagerImpl").default;
 
@@ -26,7 +27,7 @@ const defaultFilter: Array<FilterItem> = [
 const httpErrorHandler: FetchHttpErrorHandler = new FetchHttpErrorHandler();
 
 
-const api = EsServiceSimpleProxyFactory.newProxyInstances(httpErrorHandler, defaultFilter);
+const api = EsServiceSimpleProxyFactory.newProxyInstances<ApiClientFetch>(httpErrorHandler, defaultFilter);
 
 
 /**
