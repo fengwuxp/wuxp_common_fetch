@@ -1,6 +1,6 @@
 import ApiClientWeex from "./ApiClientWeex";
 import {ApiBuild} from "../../base/ApiBuild";
-import FilterHandlerByAsync from "../../filter/handler/FilterFetchHandlerByAsync";
+import FilterHandlerByAsync from "../../filter/handler/FilterHandlerByAsync";
 
 
 /**

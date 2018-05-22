@@ -2,11 +2,9 @@ import {isFunction, isNullOrUndefined} from "util";
 import {WeexStreamOption} from "../../option/WeexStreamOption";
 import {ApiClientInterface} from "../../base/ApiClientInterface";
 import {stream} from "../../../utils/ExportWeexSdkModel";
-
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
 import {DataType} from "../../enums/DataType";
 import {ReqMethod} from "../../enums/ReqMethod";
-import FilterHandlerByAsync from "../../filter/handler/FilterFetchHandlerByAsync";
 import {isWeb} from "../../../utils/WeexEnvUtil";
 import {argumentsResolver} from "../../utils/ArgumnetsResolver";
 import {PostHandlerResult} from "../../filter/model/PostHandlerResult";

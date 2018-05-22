@@ -3,7 +3,6 @@
  */
 
 import {HttpErrorHandler} from "../error/HttpErrorHandler";
-import FilterHandlerByAsync from "../filter/handler/FilterFetchHandlerByAsync";
 import {FilterHandler} from "../filter/handler/FilterHandler";
 
 /**
@@ -20,10 +19,10 @@ export abstract class ApiClientInterface<T> {
     /**
      * http错误处理者
      */
-    protected httpErrorHandler: HttpErrorHandler<any>;
+    protected httpErrorHandler: HttpErrorHandler;
 
 
-    constructor(httpErrorHandler: HttpErrorHandler<any>, filterHandler: FilterHandler) {
+    constructor(httpErrorHandler: HttpErrorHandler, filterHandler: FilterHandler) {
 
         this.httpErrorHandler = httpErrorHandler;
         this.filterHandler = filterHandler;

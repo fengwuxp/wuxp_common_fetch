@@ -16,7 +16,7 @@ export const REQUEST_ERROR: string = "__REQUEST_ERROR__";
  */
 export default class FilterHandlerByAsync implements FilterHandler<BaseApiOptions> {
 
-    private filterList: FilterItem[];
+    protected filterList: FilterItem[];
 
     constructor(filterList: FilterItem[]) {
         this.filterList = filterList;

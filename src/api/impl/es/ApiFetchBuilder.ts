@@ -2,7 +2,7 @@ import ApiClientFetch from "./ApiClientFetch";
 import {ApiBuild} from "../../base/ApiBuild";
 import {FetchOption} from "../../option/FetchOption";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
-import FilterHandlerByAsync from "../../filter/handler/FilterFetchHandlerByAsync";
+import FilterHandlerByAsync from "../../filter/handler/FilterHandlerByAsync";
 import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
 
 

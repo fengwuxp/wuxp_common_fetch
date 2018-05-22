@@ -1,7 +1,7 @@
 /**
  * http 请求错误处理
  */
-export interface HttpErrorHandler<T> {
+export interface HttpErrorHandler<T=any> {
 
     /**
      * 判断本次http请求是否成功

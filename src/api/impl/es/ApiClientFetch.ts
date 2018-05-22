@@ -8,15 +8,14 @@ import {ApiClientInterface} from "../../base/ApiClientInterface";
 import {FetchOption} from "../../option/FetchOption";
 import {ReqMethod} from "../../enums/ReqMethod";
 import {DataType} from "../../enums/DataType";
-import FilterFetchHandler, {REQUEST_ERROR} from "../../filter/handler/FilterFetchHandlerByAsync";
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
 import {argumentsResolver} from "../../utils/ArgumnetsResolver";
 import {PostHandlerResult} from "../../filter/model/PostHandlerResult";
 import {isNullOrUndefined} from "util";
 import {stringify} from "querystring";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
-import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
 import {FilterHandler} from "../../filter/handler/FilterHandler";
+import {REQUEST_ERROR} from "../../filter/handler/FilterHandlerByAsync";
 
 /**
  * 默认的请求头配置
