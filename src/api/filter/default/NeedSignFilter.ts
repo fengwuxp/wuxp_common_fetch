@@ -1,9 +1,7 @@
 import {FetchOption} from "../../option/FetchOption";
-import {isNullOrUndefined} from "util";
-import {ReqMethod} from "../../enums/ReqMethod";
 import {WeexStreamOption} from "../../option/WeexStreamOption";
 import ApiAbstractFilter from "../ApiAbstractFilter";
-import {apiSign, joinParamByReq} from "./ApiSginUtils";
+import {apiSign} from "./ApiSginUtils";
 
 /**
  * 需要签名的过滤器
@@ -32,32 +30,16 @@ export class NeedSignFilter extends ApiAbstractFilter {
     preHandle(options: FetchOption | WeexStreamOption): boolean | Promise<boolean> {
 
         let {
-            url,
-            method,
             data,
-            queryPrams,
             signFields,
         } = options;
 
+        //签名处理
         data['clientId'] = this.clientId;
         data['timestamp'] = new Date().getTime().toString();
-
-        if (!isNullOrUndefined(queryPrams) && Object.keys(queryPrams).length > 0 && method === ReqMethod.GET) {
-            if (url.indexOf("?") >= 0) {
-                url += "&";
-            } else {
-                url += "?"
-            }
-            url += joinParamByReq(queryPrams);
-        }
         data['channelCode'] = this.channelCode;
         data['sign'] = apiSign(signFields, data, this.clientSecret);
 
-        let body: String = "";
-        if (!isNullOrUndefined(data)) {
-            body = joinParamByReq(data);
-            options.data = body;
-        }
         return true;
     }
 

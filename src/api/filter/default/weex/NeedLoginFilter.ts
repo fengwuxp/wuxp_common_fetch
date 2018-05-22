@@ -5,6 +5,7 @@ import {timer} from "../../../../utils/ExportWeexSdkModel";
 import {broadcast} from "../../../../utils/ExpotrtWeexCustomModel";
 import {ApiResp} from "../../../model/ApiResp";
 import {ReqMethod} from "../../../enums/ReqMethod";
+import {DataType} from "../../../enums/DataType";
 
 
 /**
@@ -41,13 +42,12 @@ export interface MemberSessionManager<T=any> {
  */
 const tokenHandle = (token: string = "", options: WeexStreamOption): void => {
     //设置token
-    if (options.method === ReqMethod.GET) {
+    if (options.method === ReqMethod.GET || options.dataType === DataType.JSONP) {
         options.queryPrams = options.queryPrams || {};
         options.queryPrams.token = token;
     } else {
         options.headers = options.headers || {};
         options.headers.token = token;
-
     }
 };
 

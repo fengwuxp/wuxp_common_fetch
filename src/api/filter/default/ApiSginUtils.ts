@@ -1,6 +1,6 @@
 import {isNullOrUndefined, isString} from "util";
-import md5 from "md5";
-
+// import md5 from "md5";
+const md5=require("md5")
 /**
  * ap请求时签名
  * @param fields 需要签名的列

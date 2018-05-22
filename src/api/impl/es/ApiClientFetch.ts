@@ -141,7 +141,6 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
     }
 
 
-
     /**
      * 构建请求对象
      * @param {FetchOption} options
@@ -192,6 +191,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
             }
         }
         let body: any;
+
         //GET请求不能携带body
         if (reqMethodElement === ReqMethod.POST) {
             if (isDefaultSerialize) {

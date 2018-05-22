@@ -58,10 +58,6 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
             option.dataType = DataType.JSONP;
         }
 
-        // option.data = Object.assign(option.data, {
-        //     timestamp: new Date().getTime().toString(),
-        //     clientId: GlobalApiConfig.CLIENT_ID
-        // });
 
         //url 拼接
         if (!(option.url.startsWith("http://") || option.url.startsWith("https://"))) {
@@ -192,7 +188,7 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
             // console.log(JSON.stringify(headers));
         } else if (method === ReqMethod.GET) {
             //查询字符串
-            url += `${queryString}&clientId=${data['clientId']}`;
+            url += `&clientId=${data['clientId']}`;
             url += `&data=${JSON.stringify(data)}`;
             url = encodeURI(url as string);   //URL encode
             data = null;
