@@ -1,6 +1,8 @@
 import {isNullOrUndefined, isString} from "util";
+import StringUtils from "../../../utils/StringUtils";
 // import md5 from "md5";
-const md5=require("md5")
+const md5 = require("md5")
+
 /**
  * ap请求时签名
  * @param fields 需要签名的列
@@ -26,8 +28,11 @@ export function apiSign(fields: Array<string>, params: any, clientSecret: string
     value += `clientId=${params.clientId }&clientSecret=${clientSecret}&timestamp=${ params.timestamp}`;
 
     let channelCode: string = params.channelCode;
-    if (!isNullOrUndefined(channelCode) && channelCode.trim().length > 0) {
-        value += `&channelCode=${channelCode}`; //加入渠道编号
+    if (StringUtils.hasText(channelCode)) {
+        //加入渠道编号
+        value += `&channelCode=${channelCode}`;
+    } else {
+        console.warn("签名时channelCode未传入");
     }
 
     return md5(value);

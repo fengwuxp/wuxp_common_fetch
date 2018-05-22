@@ -200,7 +200,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                 body = stringify(data);
             } else if (serializeType === SerializeType.JSON) {
                 //json
-                body = data;
+                body =  JSON.stringify(data);
             } else {
                 body = data;
             }
