@@ -1,7 +1,10 @@
+import {ApiResp} from "../../model/ApiResp";
+
 /**
  * post handler处理结果
  */
-export interface PostHandlerResult {
+
+export interface PostHandlerResult<T=any> {
 
     /**
      * 处理成功
@@ -11,7 +14,7 @@ export interface PostHandlerResult {
     /**
      *处理完的结果数据
      */
-    resp: Array<any>;
+    resp: Array<ApiResp<T>>;
 
 
 }

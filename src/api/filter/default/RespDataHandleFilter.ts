@@ -1,6 +1,7 @@
 import ApiAbstractFilter from "../ApiAbstractFilter";
 import {ApiResp} from "../../model/ApiResp";
-import {PostHandlerResult} from "../model/PostHandlerResult";
+import {isFunction} from "util";
+import {BaseApiOptions} from "../../base/BaseApiOptions";
 
 /**
  * 对相应数据进行预处理
@@ -8,12 +9,15 @@ import {PostHandlerResult} from "../model/PostHandlerResult";
 export class RespDataHandleFilter extends ApiAbstractFilter {
 
 
-    preHandle(params: any): boolean | Promise<boolean> {
-        return super.preHandle(params);
-    }
+    postHandle(resp: ApiResp<any>, options: BaseApiOptions): boolean {
+        
+        const {code} = resp;
 
-    postHandle(resp: ApiResp<any>): boolean {
-        const {data, code} = resp;
+        if (isFunction(options.context.resp)) {
+            //通过context 将数据传入
+            options.context.resp(resp);
+        }
+
         if (code === 0) {
             return true
         } else {

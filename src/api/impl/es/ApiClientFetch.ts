@@ -11,7 +11,7 @@ import {DataType} from "../../enums/DataType";
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
 import {argumentsResolver} from "../../utils/ArgumnetsResolver";
 import {PostHandlerResult} from "../../filter/model/PostHandlerResult";
-import {isNullOrUndefined} from "util";
+import {isFunction, isNullOrUndefined} from "util";
 import {stringify} from "querystring";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 import {FilterHandler} from "../../filter/handler/FilterHandler";
@@ -103,6 +103,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         }
         //使用filter
         let handler = this.filterHandler;
+
         return handler.preHandle(fetchOptions).then(() => {
             //构建Request请求对象
             const request = this.buildRequest(fetchOptions);
@@ -111,13 +112,11 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
             }).then((response: Response) => {
                 return this.parse(response, dataType).then((data) => {
                     return handler.postHandle(fetchOptions, data).then((result: PostHandlerResult) => {
-                        return new Promise(((resolve, reject) => {
-                            if (result.isSuccess) {
-                                resolve(...result.resp);
-                            } else {
-                                reject(...result.resp);
-                            }
-                        }));
+                        if (result.isSuccess) {
+                            return Promise.resolve(result.resp[0].data);
+                        } else {
+                            return Promise.reject(result.resp[0]);
+                        }
                     });
                 });
             }).catch((e) => {
@@ -200,7 +199,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                 body = stringify(data);
             } else if (serializeType === SerializeType.JSON) {
                 //json
-                body =  JSON.stringify(data);
+                body = JSON.stringify(data);
             } else {
                 body = data;
             }

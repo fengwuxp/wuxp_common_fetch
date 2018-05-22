@@ -132,10 +132,15 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
             options.callBack = (resp) => {
                 this.filterHandler.postHandle(options, resp).then((result: PostHandlerResult) => {
                     //code=0 且 过滤器的处理均成功
+                    // if (result.isSuccess) {
+                    //     resolve(result.resp[0].data, result.resp[0]);
+                    // } else {
+                    //     reject(result.resp[0]);
+                    // }
                     if (result.isSuccess) {
-                        resolve(result.resp[0].data, result.resp[0]);
+                        return Promise.resolve(result.resp[0].data);
                     } else {
-                        reject(result.resp[0]);
+                        return Promise.reject(result.resp[0]);
                     }
                 }).catch((result: PostHandlerResult) => {
                     //过滤器处理失败
