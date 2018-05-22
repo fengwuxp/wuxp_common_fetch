@@ -12,6 +12,7 @@ import {stringify} from "querystring";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 import {FilterHandler} from "../../filter/handler/FilterHandler";
 import {REQUEST_ERROR} from "../../filter/handler/FilterHandlerByAsync";
+import {BaseApiContext} from "../../base/BaseApiOptions";
 
 
 const IS_WEB: boolean = isWeb();
@@ -125,9 +126,9 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
 
         const options: WeexStreamOption = argumentsResolver(...p);
 
-        return new Promise((resolve: Function = () => {
-        }, reject: Function = () => {
-        }) => {
+        options.context = options.context || {} as BaseApiContext;
+
+        let promise = new Promise((resolve, reject) => {
             //这个写法是为了在调用方法的时候 可以覆盖默认的配置
             options.callBack = (resp) => {
                 this.filterHandler.postHandle(options, resp).then((result: PostHandlerResult) => {
@@ -138,6 +139,7 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
                     //     reject(result.resp[0]);
                     // }
                     if (result.isSuccess) {
+                        options.context.respData = result.resp[0];
                         return Promise.resolve(result.resp[0].data);
                     } else {
                         return Promise.reject(result.resp[0]);
@@ -149,6 +151,9 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
             };
             this.request(reject, options);
         });
+        //设置context
+        promise.setContext<BaseApiContext>(options.context);
+        return promise;
     }
 
     /**

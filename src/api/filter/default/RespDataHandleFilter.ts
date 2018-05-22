@@ -10,13 +10,9 @@ export class RespDataHandleFilter extends ApiAbstractFilter {
 
 
     postHandle(resp: ApiResp<any>, options: BaseApiOptions): boolean {
-        
+
         const {code} = resp;
 
-        if (isFunction(options.context.resp)) {
-            //通过context 将数据传入
-            options.context.resp(resp);
-        }
 
         if (code === 0) {
             return true

@@ -1,7 +1,4 @@
-/**
- * Created by wuxp on 2017/5/6.
- */
-
+import "../../../types/PromiseExt";
 import {HttpErrorHandler} from "../error/HttpErrorHandler";
 import {FilterHandler} from "../filter/handler/FilterHandler";
 

@@ -61,13 +61,13 @@ export interface BaseApiOptions {
 
 }
 
-export interface BaseApiContext {
+export interface BaseApiContext<T=any> {
 
     [key: string]: any
 
+
     /**
-     * 响应的完整数据将会传入该函数，该回调将会在promise之前被执行
-     * @param p
+     * 响应的完整数据
      */
-    resp: (...p) => void;
+    respData: T
 }

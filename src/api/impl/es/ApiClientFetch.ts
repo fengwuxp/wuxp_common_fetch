@@ -16,6 +16,7 @@ import {stringify} from "querystring";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 import {FilterHandler} from "../../filter/handler/FilterHandler";
 import {REQUEST_ERROR} from "../../filter/handler/FilterHandlerByAsync";
+import {BaseApiContext, BaseApiOptions} from "../../base/BaseApiOptions";
 
 /**
  * 默认的请求头配置
@@ -104,7 +105,9 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         //使用filter
         let handler = this.filterHandler;
 
-        return handler.preHandle(fetchOptions).then(() => {
+        option.context = option.context || {} as BaseApiContext;
+
+        let p0 = handler.preHandle(fetchOptions).then(() => {
             //构建Request请求对象
             const request = this.buildRequest(fetchOptions);
             return fetch(request).then((response: Response) => {
@@ -113,6 +116,8 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                 return this.parse(response, dataType).then((data) => {
                     return handler.postHandle(fetchOptions, data).then((result: PostHandlerResult) => {
                         if (result.isSuccess) {
+                            //数据设置到context中
+                            option.context.respData = result.resp[0];
                             return Promise.resolve(result.resp[0].data);
                         } else {
                             return Promise.reject(result.resp[0]);
@@ -126,6 +131,10 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                 });
             })
         });
+
+        p0.setContext<BaseApiContext>(option.context);
+
+        return p0;
     }
 
 
