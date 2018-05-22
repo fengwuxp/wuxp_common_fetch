@@ -1,70 +1,44 @@
-import {NeedSignFilter} from "../../filter/default/NeedSignFilter";
-import {MemberSessionManager, NeedLoginFilter} from "../../filter/default/es/NeedLoginFilter";
-import GlobalApiConfig from "../../../config/GlobalAipConfig";
-import {RespDataHandleFilter} from "../../filter/default/RespDataHandleFilter";
-import {buildApiClientProxy} from "./BuildApiClientProxy";
+import ApiFetchBuilder from "./ApiFetchBuilder";
 import {FilterItem} from "../../filter/model/FilterItem";
-import EsServiceSimpleProxyFactory from "./EsServiceSimpleProxyFactory";
-import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
-import ApiClientFetch from "./ApiClientFetch";
+import {buildApiClientProxy} from "./BuildApiClientProxy";
+import {isNullOrUndefined} from "util";
+import {FetchOption} from "../../option/FetchOption";
+import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 
-const MemberSessionManager: MemberSessionManager = require("../../../../../../src/session/MemberSessionManagerImpl").default;
-
-
-const defaultFilter: Array<FilterItem> = [
-    {
-        filter: new NeedSignFilter(GlobalApiConfig.CLIENT_ID, GlobalApiConfig.CLIENT_SECRET, GlobalApiConfig.CHANNEL_CODE)
-    },
-    {
-        filter: new NeedLoginFilter(MemberSessionManager)
-    },
-    {
-        filter: new RespDataHandleFilter()
-    }
-];
-
-//http请求处理错误处理者
-const httpErrorHandler: FetchHttpErrorHandler = new FetchHttpErrorHandler();
-
-
-let apiInstance = null;
 
 /**
  * 代理服务工厂，将一个服务对象包裹，抛出一个新对象
- * Created by wuxp on 2017/5/17.
  */
-export default class EsServiceProxyFactory {
+export default class EsServiceSimpleProxyFactory {
 
 
     /**
      * 获取一个代理服务对象的实例
+     * @param httpErrorHandler http错误处理者
+     * @param defaultFilters 默认的过滤器
+     * @param defaultOptions 默认的请求配置
      * @param targetService  目标服务对象
      * @return {{}}
      */
-    public static newProxyInstances<T>(targetService: T): T {
-        if (apiInstance === null) {
-            apiInstance = EsServiceSimpleProxyFactory.newProxyInstances<ApiClientFetch>(httpErrorHandler, defaultFilter);
+    public static newProxyInstances<T>(httpErrorHandler: HttpErrorHandler<Response>,
+                                       defaultFilters: Array<FilterItem> = [],
+                                       defaultOptions?: FetchOption,
+                                       targetService?: T): T {
+        const builder = ApiFetchBuilder.builder();
+        defaultFilters.forEach(item => {
+
+            builder.registerDefaultFilter(item);
+        });
+
+        const api: any = builder.httpErrorHandler(httpErrorHandler)
+            .defaultOptions(defaultOptions)
+            .build();
+        if (isNullOrUndefined(targetService)) {
+            return api;
         }
-        return buildApiClientProxy(targetService, apiInstance);
-    }
 
-    /**
-     * 添加一个过滤器到最前面
-     * @param {FilterItem} filter
-     * @return {EsServiceProxyFactory}
-     */
-    public static addFilterByBegin(filter: FilterItem) {
-        defaultFilter.unshift(filter);
-        return EsServiceProxyFactory;
+        return buildApiClientProxy(targetService, api);
     }
-
-    /**
-     * 添加一个过滤器到最最后
-     * @param {FilterItem} filter
-     */
-    public static addFilterByEnd(filter: FilterItem) {
-        defaultFilter.push(filter);
-        return EsServiceProxyFactory;
-    }
-
 }
+
+

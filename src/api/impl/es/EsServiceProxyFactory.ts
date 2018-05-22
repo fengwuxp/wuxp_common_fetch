@@ -27,7 +27,7 @@ const defaultFilter: Array<FilterItem> = [
 const httpErrorHandler: FetchHttpErrorHandler = new FetchHttpErrorHandler();
 
 
-const api = EsServiceSimpleProxyFactory.newProxyInstances<ApiClientFetch>(httpErrorHandler, defaultFilter);
+let api = null;
 
 
 /**
@@ -43,7 +43,9 @@ export default class EsServiceProxyFactory {
      * @return {{}}
      */
     public static newProxyInstances<T>(targetService: T): T {
-
+        if (api === null) {
+            api = EsServiceSimpleProxyFactory.newProxyInstances<ApiClientFetch>(httpErrorHandler, defaultFilter);
+        }
         return buildApiClientProxy(targetService, api);
     }
 
