@@ -122,7 +122,7 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
      * 分发
      * 其他参数是接口传入的参数
      */
-    dispatch(...p): Promise<Function> {
+    dispatch(...p): Promise<any> {
 
         const options: WeexStreamOption = argumentsResolver(...p);
 
