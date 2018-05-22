@@ -11,6 +11,7 @@ import {PostHandlerResult} from "../../filter/model/PostHandlerResult";
 import {stringify} from "querystring";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 import {FilterHandler} from "../../filter/handler/FilterHandler";
+import {REQUEST_ERROR} from "../../filter/handler/FilterHandlerByAsync";
 
 
 const IS_WEB: boolean = isWeb();
@@ -83,13 +84,16 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
                  * data {Object | string}: 返回的数据，如果请求类型是 json 和 jsonp，则它就是一个 object ，如果不是，则它就是一个 string。
                  * headers {Object}：响应头
                  */
+                let data;
                 if (!response.ok) {
                     //请求没有正确响应
                     console.error("响应状态码：" + response.status + " 状态描述：" + response.statusText);
-                    return;
+                    data = REQUEST_ERROR;
+                } else {
+                    data = response.data;
                 }
                 // console.log("响应信息："+JSON.stringify(response));
-                callBack(response.data, response.headers);
+                callBack(data, response.headers);
             }, function (resp) {
                 //console.log(resp);
                 /**
