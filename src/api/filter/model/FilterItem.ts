@@ -2,6 +2,19 @@ import {ApiFilter} from "../ApiFilter";
 import {UrlPattern} from "./UrlPattern";
 
 /**
+ * 执行方式
+ */
+export enum ExecuteMethod {
+
+    //只在请求成功的时候做处理
+    ONLY_SUCCESS,
+
+
+    ALL
+
+}
+
+/**
  * 过滤器配置项
  */
 export interface FilterItem {
@@ -30,4 +43,9 @@ export interface FilterItem {
      * 过滤器的名称
      */
     filterName?: string;
+
+    /**
+     * 执行方式默认为 ONLY_SUCCESS
+     */
+    executeMethod?: ExecuteMethod
 }

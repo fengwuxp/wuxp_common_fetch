@@ -1,5 +1,6 @@
 import ApiClientWeex from "./ApiClientWeex";
 import {ApiBuild} from "../../base/ApiBuild";
+import FilterHandlerByAsync from "../../filter/handler/FilterFetchHandlerByAsync";
 
 
 /**
@@ -18,7 +19,7 @@ class ApiWeexBuild extends ApiBuild<ApiClientWeex> {
      */
     public build(): ApiClientWeex {
 
-        return new ApiClientWeex();
+        return new ApiClientWeex(null, new FilterHandlerByAsync(this.defaultFilter));
     }
 }
 

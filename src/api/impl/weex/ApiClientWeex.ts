@@ -6,16 +6,16 @@ import {stream} from "../../../utils/ExportWeexSdkModel";
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
 import {DataType} from "../../enums/DataType";
 import {ReqMethod} from "../../enums/ReqMethod";
-import FilterFetchHandlerByAsync from "../../filter/FilterFetchHandlerByAsync";
+import FilterHandlerByAsync from "../../filter/handler/FilterFetchHandlerByAsync";
 import {isWeb} from "../../../utils/WeexEnvUtil";
 import {argumentsResolver} from "../../utils/ArgumnetsResolver";
 import {PostHandlerResult} from "../../filter/model/PostHandlerResult";
 import {stringify} from "querystring";
+import {HttpErrorHandler} from "../../error/HttpErrorHandler";
+import {FilterHandler} from "../../filter/handler/FilterHandler";
 
-const filterHandler: FilterFetchHandlerByAsync = new FilterFetchHandlerByAsync();
 
 const IS_WEB: boolean = isWeb();
-
 
 
 /**
@@ -24,11 +24,8 @@ const IS_WEB: boolean = isWeb();
 class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
 
 
-    /**
-     * @param userFilter
-     */
-    constructor(userFilter?: boolean) {
-        super(null, userFilter);
+    constructor(httpErrorHandler: HttpErrorHandler<any>, filterHandler: FilterHandler) {
+        super(httpErrorHandler, filterHandler);
     }
 
     /**
@@ -74,7 +71,7 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
         }
 
         //使用filter
-        filterHandler.preHandle(option).then(() => {  //添加查询参数的处理
+        this.filterHandler.preHandle(option).then(() => {  //添加查询参数的处理
             let {
                 progressCallback,
                 callBack
@@ -135,7 +132,7 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
         }) => {
             //这个写法是为了在调用方法的时候 可以覆盖默认的配置
             options.callBack = (resp) => {
-                filterHandler.postHandle(options, resp).then((result: PostHandlerResult) => {
+                this.filterHandler.postHandle(options, resp).then((result: PostHandlerResult) => {
                     //code=0 且 过滤器的处理均成功
                     if (result.isSuccess) {
                         resolve(result.resp[0].data, result.resp[0]);
@@ -202,7 +199,6 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
             url = encodeURI(url as string);   //URL encode
             data = null;
         }
-
 
 
         //WEEX stream对象 https://weex.apache.org/cn/references/modules/stream.html

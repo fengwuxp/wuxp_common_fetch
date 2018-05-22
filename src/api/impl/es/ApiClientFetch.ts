@@ -8,7 +8,7 @@ import {ApiClientInterface} from "../../base/ApiClientInterface";
 import {FetchOption} from "../../option/FetchOption";
 import {ReqMethod} from "../../enums/ReqMethod";
 import {DataType} from "../../enums/DataType";
-import FilterFetchHandler from "../../filter/FilterFetchHandlerByAsync";
+import FilterFetchHandler, {REQUEST_ERROR} from "../../filter/handler/FilterFetchHandlerByAsync";
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
 import {argumentsResolver} from "../../utils/ArgumnetsResolver";
 import {PostHandlerResult} from "../../filter/model/PostHandlerResult";
@@ -16,8 +16,7 @@ import {isNullOrUndefined} from "util";
 import {stringify} from "querystring";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
-
-const filterHandler = new FilterFetchHandler();
+import {FilterHandler} from "../../filter/handler/FilterHandler";
 
 /**
  * 默认的请求头配置
@@ -38,14 +37,16 @@ polyfill();
 export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
 
 
-    //默认的fetchOptions
+    /**
+     * 默认的fetchOptions
+     */
     private DEFAULT_FETCH_OPTION: FetchOption;
 
 
-    constructor(httpErrorHandler: HttpErrorHandler<any> = new FetchHttpErrorHandler(),
-                userFilter?: boolean,
+    constructor(httpErrorHandler: HttpErrorHandler<any>,
+                filterHandler: FilterHandler,
                 options: FetchOption = {} as FetchOption) {
-        super(httpErrorHandler, userFilter);
+        super(httpErrorHandler, filterHandler);
         this.DEFAULT_FETCH_OPTION = options
     }
 
@@ -88,7 +89,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         //TODO 请求超时
         //TODO 文件上传等进度
 
-        if (!this.useFilter(fetchOptions)) {
+        if (!this.useFilter()) {
             //不使用过滤器处理
             //构建Request请求对象
             const request = this.buildRequest(fetchOptions);
@@ -102,14 +103,15 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
             fetchOptions.headers = {};
         }
         //使用filter
-        return filterHandler.preHandle(fetchOptions).then(() => {
+        let handler = this.filterHandler;
+        return handler.preHandle(fetchOptions).then(() => {
             //构建Request请求对象
             const request = this.buildRequest(fetchOptions);
             return fetch(request).then((response: Response) => {
                 return this.checkStatus(response, fetchOptions);
             }).then((response: Response) => {
                 return this.parse(response, dataType).then((data) => {
-                    return filterHandler.postHandle(fetchOptions, data).then((result: PostHandlerResult) => {
+                    return handler.postHandle(fetchOptions, data).then((result: PostHandlerResult) => {
                         return new Promise(((resolve, reject) => {
                             if (result.isSuccess) {
                                 resolve(...result.resp);
@@ -119,7 +121,12 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                         }));
                     });
                 });
-            });
+            }).catch((e) => {
+                //执行失败
+                return handler.postHandle(fetchOptions, REQUEST_ERROR).then((result: PostHandlerResult) => {
+                    return Promise.reject(e);
+                });
+            })
         });
     }
 
@@ -135,20 +142,6 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
     }
 
 
-    /**
-     * 是否使用过滤器
-     * @param {FetchOption} options
-     * @returns {boolean}
-     */
-    private useFilter(options: FetchOption) {
-
-        if (isNullOrUndefined(options.useFilter)) {
-            return this.getUserFilter();
-        } else {
-            //强制使用/不使用
-            return options.useFilter;
-        }
-    }
 
     /**
      * 构建请求对象

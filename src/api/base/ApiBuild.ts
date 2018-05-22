@@ -1,5 +1,4 @@
 import {FilterItem} from "../filter/model/FilterItem";
-import {addLast, addFirst, addDefaultFilter} from "../filter/FilterContainer";
 
 /**
  * 构建api client
@@ -7,8 +6,25 @@ import {addLast, addFirst, addDefaultFilter} from "../filter/FilterContainer";
 export abstract class ApiBuild<T> {
 
 
+    protected filterList: FilterItem[] = [];
+
+    protected defaultFilter: FilterItem[] = [];
+
     constructor() {
     }
+
+
+    protected addLast = (item: FilterItem) => {
+        this.filterList.push(item);
+    };
+
+    protected addFirst = (item: FilterItem) => {
+        this.filterList.unshift(item);
+    };
+
+    protected addDefaultFilter = (item: FilterItem) => {
+        this.defaultFilter.push(item);
+    };
 
     /**
      * 集中式的注册filter
@@ -16,10 +32,7 @@ export abstract class ApiBuild<T> {
      */
     registerFilter = (items: Array<FilterItem>) => {
         //注册 filter
-        items.forEach((item: FilterItem) => {
-            addLast(item);
-        });
-
+        this.filterList.push(...items);
         return this;
     };
 
@@ -29,7 +42,7 @@ export abstract class ApiBuild<T> {
      * @return {ApiFetchBuilder}
      */
     registerLastFilter = (item: FilterItem) => {
-        addLast(item);
+        this.addLast(item);
         return this;
     };
 
@@ -39,7 +52,7 @@ export abstract class ApiBuild<T> {
      * @return {ApiFetchBuilder}
      */
     registerFirstFilter = (item: FilterItem) => {
-        addFirst(item);
+        this.addFirst(item);
         return this;
     };
 
@@ -48,8 +61,7 @@ export abstract class ApiBuild<T> {
      * @param {FilterItem} item
      */
     registerDefaultFilter = (item: FilterItem) => {
-
-        addDefaultFilter(item);
+        this.addDefaultFilter(item);
         return this;
     };
 

@@ -1,6 +1,6 @@
 import {getDefaultFilter, getFilters} from "./FilterContainer";
-import {UrlPattern} from "./model/UrlPattern";
-import {FilterItem} from "./model/FilterItem";
+import {UrlPattern} from "../model/UrlPattern";
+import {FilterItem} from "../model/FilterItem";
 import {isArray, isNullOrUndefined} from "util";
 
 /**

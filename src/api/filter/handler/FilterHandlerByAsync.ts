@@ -1,12 +1,25 @@
-import {urlParser} from "./UrlMatchUtils";
-import {BaseApiOptions} from "../base/BaseApiOptions";
-import {PostHandlerResult} from "./model/PostHandlerResult";
+import {BaseApiOptions} from "../../base/BaseApiOptions";
+import {PostHandlerResult} from "../model/PostHandlerResult";
+import {ExecuteMethod, FilterItem} from "../model/FilterItem";
+import {FilterHandler} from "./FilterHandler";
+
+/**
+ * 请求异常标志
+ * @type {string}
+ */
+export const REQUEST_ERROR: string = "__REQUEST_ERROR__";
 
 
-export default class FilterFetchHandlerByAsync {
+/**
+ * filter　处理器
+ * TODO 支持ulr级别的filter过滤
+ */
+export default class FilterHandlerByAsync implements FilterHandler<BaseApiOptions> {
 
+    private filterList: FilterItem[];
 
-    constructor() {
+    constructor(filterList: FilterItem[]) {
+        this.filterList = filterList;
     }
 
     /**
@@ -16,7 +29,7 @@ export default class FilterFetchHandlerByAsync {
      */
     public preHandle = (options: BaseApiOptions): Promise<boolean> => {
 
-        return this.doFilter(options, "preHandle",null);
+        return this.doFilter(options, "preHandle", null);
     };
 
     /**
@@ -38,7 +51,7 @@ export default class FilterFetchHandlerByAsync {
      * @return {Promise<boolean|PostHandlerResult>}
      */
     private async doFilter(options: BaseApiOptions, fnName: string, params: any): Promise<any> {
-        const filterItems = urlParser(options, "");
+        const filterItems = this.filterList;
         let i = 0;
 
         //filterItems.length===0时
@@ -46,25 +59,33 @@ export default class FilterFetchHandlerByAsync {
         if (fnName === "preHandle") {
             while (i < filterItems.length) {
                 let apiFilter = filterItems[i].filter;
+                i++;
                 result = await apiFilter.preHandle(options);
                 //处理失败
                 if (!result) {
                     return false
                 }
-                i++;
             }
             return result;
         } else {
             while (i < filterItems.length) {
-                let apiFilter = filterItems[i].filter;
-                result = await apiFilter.postHandle(params,options);
+                let filterItem = filterItems[i];
+                i++;
+                let apiFilter = filterItem.filter;
+                if (params === REQUEST_ERROR) {
+                    //请求失败
+                    if (filterItem.executeMethod !== ExecuteMethod.ALL) {
+                        //跳过只在请求成功时才执行的filter
+                        continue;
+                    }
+                }
+                result = await apiFilter.postHandle(params, options);
                 if (!result) {
                     return {
                         isSuccess: false,
                         resp: [params]
                     };
                 }
-                i++;
             }
             return {
                 isSuccess: true,

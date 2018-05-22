@@ -1,5 +1,5 @@
-import {ApiFilter} from "./ApiFilter";
-import {FilterItem} from "./model/FilterItem";
+import {ApiFilter} from "../ApiFilter";
+import {FilterItem} from "../model/FilterItem";
 
 
 /**

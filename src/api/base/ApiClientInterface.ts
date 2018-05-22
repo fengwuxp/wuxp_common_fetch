@@ -3,6 +3,8 @@
  */
 
 import {HttpErrorHandler} from "../error/HttpErrorHandler";
+import FilterHandlerByAsync from "../filter/handler/FilterFetchHandlerByAsync";
+import {FilterHandler} from "../filter/handler/FilterHandler";
 
 /**
  * Api客户端请求接口
@@ -13,7 +15,7 @@ export abstract class ApiClientInterface<T> {
      * 是否使用过滤器机制
      * @type {boolean}
      */
-    protected _userFilter: boolean;
+    protected filterHandler: FilterHandler;
 
     /**
      * http错误处理者
@@ -21,25 +23,16 @@ export abstract class ApiClientInterface<T> {
     protected httpErrorHandler: HttpErrorHandler<any>;
 
 
-    constructor(httpErrorHandler: HttpErrorHandler<any>, userFilter: boolean = true) {
+    constructor(httpErrorHandler: HttpErrorHandler<any>, filterHandler: FilterHandler) {
 
         this.httpErrorHandler = httpErrorHandler;
-
-        this._userFilter = userFilter;
+        this.filterHandler = filterHandler;
     }
 
-    /**
-     * 开启过滤器机制
-     * @param {boolean} use
-     */
-    openUseFilter(use: boolean = true) {
-        this._userFilter = use;
-    }
 
-    getUserFilter() {
-        return this._userFilter;
-    }
-
+    protected useFilter = () => {
+        return this.filterHandler != null;
+    };
 
     /**
      * post请求

@@ -2,6 +2,8 @@ import ApiClientFetch from "./ApiClientFetch";
 import {ApiBuild} from "../../base/ApiBuild";
 import {FetchOption} from "../../option/FetchOption";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
+import FilterHandlerByAsync from "../../filter/handler/FilterFetchHandlerByAsync";
+import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
 
 
 /**
@@ -10,11 +12,9 @@ import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 class ApiFetchBuilder extends ApiBuild<ApiClientFetch> {
 
 
-    private _useFilter: boolean;
-
     private _defaultOptions: FetchOption;
 
-    protected _httpErrorHandler: HttpErrorHandler<Response>;
+    protected _httpErrorHandler: HttpErrorHandler<Response> = new FetchHttpErrorHandler();
 
     private constructor() {
         super();
@@ -26,7 +26,6 @@ class ApiFetchBuilder extends ApiBuild<ApiClientFetch> {
 
 
     useFilter(value: boolean) {
-        this._useFilter = value;
         return this;
     }
 
@@ -47,7 +46,9 @@ class ApiFetchBuilder extends ApiBuild<ApiClientFetch> {
      */
     public build(): ApiClientFetch {
 
-        return new ApiClientFetch(this._httpErrorHandler, this._useFilter, this._defaultOptions);
+        return new ApiClientFetch(this._httpErrorHandler,
+            new FilterHandlerByAsync(this.defaultFilter),
+            this._defaultOptions);
     }
 }
 
