@@ -12,7 +12,7 @@ export function buildApiClientProxy<T>(targetService: T, apiClient: ApiClientInt
         get: function (target: any, serviceMethod: PropertyKey, receiver: any): any {
             return function (...p) {
                 const options: FetchOption = target[serviceMethod]();
-                return apiClient.dispatch(`/${targetService.constructor.name}/${serviceMethod}`, options, ...p);
+                return apiClient.dispatch(`/${targetService['serviceName']}/${serviceMethod}`, options, ...p);
             }
         },
         set: function (target, key, value, receiver): boolean {

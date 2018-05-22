@@ -41,7 +41,7 @@ export default class ApiClientProxyFactory {
                     // arguments[3] = isUndefined(arguments[3]) ? DataType.JSON : arguments[3];
                     return function (...p) {
                         const options: Array<any> = targetService[key]();
-                        return api.dispatch(`/${targetService.constructor.name}/${key}`,options, ...p);
+                        return api.dispatch(`/${targetService['serviceName']}/${key}`,options, ...p);
                     }
                 }
             });
