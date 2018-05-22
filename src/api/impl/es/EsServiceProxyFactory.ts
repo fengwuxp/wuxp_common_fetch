@@ -7,6 +7,7 @@ import {FilterItem} from "../../filter/model/FilterItem";
 import EsServiceSimpleProxyFactory from "./EsServiceSimpleProxyFactory";
 import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
 import ApiClientFetch from "./ApiClientFetch";
+import {SerializeType} from "../../option/FetchOption";
 
 const MemberSessionManager: MemberSessionManager = require("../../../../../../src/session/MemberSessionManagerImpl").default;
 
@@ -37,6 +38,8 @@ let api = null;
 export default class EsServiceProxyFactory {
 
 
+    //application/json;charset=UTF-8
+
     /**
      * 获取一个代理服务对象的实例
      * @param targetService  目标服务对象
@@ -44,7 +47,12 @@ export default class EsServiceProxyFactory {
      */
     public static newProxyInstances<T>(targetService: T): T {
         if (api === null) {
-            api = EsServiceSimpleProxyFactory.newProxyInstances<ApiClientFetch>(httpErrorHandler, defaultFilter);
+            api = EsServiceSimpleProxyFactory.newProxyInstances<ApiClientFetch>(httpErrorHandler, defaultFilter,{
+                serializeType:SerializeType.JSON,
+                headers:{
+                    'Content-Type': 'application/json;charset=UTF-8'
+                }
+            });
         }
         return buildApiClientProxy(targetService, api);
     }

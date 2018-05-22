@@ -5,7 +5,7 @@ import 'fetch-detector'
 import 'fetch-ie8'
 
 import {ApiClientInterface} from "../../base/ApiClientInterface";
-import {FetchOption} from "../../option/FetchOption";
+import {FetchOption, SerializeType} from "../../option/FetchOption";
 import {ReqMethod} from "../../enums/ReqMethod";
 import {DataType} from "../../enums/DataType";
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
@@ -167,13 +167,14 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
 
 
         if (isNullOrUndefined(serializeType)) {
-            serializeType = "default";
+            serializeType = SerializeType.FORM_DATA;
         }
 
-        //默认的序列化处理方式(以表单的形式提交数据)
-        const isDefaultSerialize = serializeType === "default";
+        //以表单的形式提交数据
+        const isFormData = serializeType === SerializeType.FORM_DATA;
 
-        const requestHeaders = Object.assign({}, isDefaultSerialize ? DEFAULT_HEADERS : {}, headers);
+        //请求头
+        const requestHeaders = Object.assign({}, isFormData ? DEFAULT_HEADERS : {}, headers);
 
         const reqMethodElement = ReqMethod[method];
 
@@ -194,8 +195,12 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
 
         //GET请求不能携带body
         if (reqMethodElement === ReqMethod.POST) {
-            if (isDefaultSerialize) {
+            if (isFormData) {
+                //表单数据
                 body = stringify(data);
+            } else if (serializeType === SerializeType.JSON) {
+                //json
+                body = data;
             } else {
                 body = data;
             }

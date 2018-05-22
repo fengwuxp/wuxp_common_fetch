@@ -55,9 +55,21 @@ export interface FetchOption extends BaseApiOptions {
      * default：以表单的方式处理
      * 默认值：default
      */
-    serializeType?: "none" | "default"
+    serializeType?: SerializeType
 
 
+}
+
+export enum SerializeType {
+
+    //不处理
+    NONE,
+
+    //json
+    JSON,
+
+    //form data
+    FORM_DATA
 }
 
 /**
