@@ -35,10 +35,6 @@ export default class ApiClientProxyFactory {
                     throw new Error("proxy service 无法设置新的属性");
                 },
                 get: function () {
-                    // arguments[0] = isUndefined(arguments[0]) ? {} : Object.assign({}, arguments[0]);
-                    // arguments[1] = isUndefined(arguments[1]) ? {useProgressBar: true} : Object.assign({}, arguments[1]);
-                    // arguments[2] = isUndefined(arguments[2]) ? ReqMethod.POST : arguments[2];
-                    // arguments[3] = isUndefined(arguments[3]) ? DataType.JSON : arguments[3];
                     return function (...p) {
                         const options: Array<any> = targetService[key]();
                         return api.dispatch(`/${targetService['serviceName']}/${key}`,options, ...p);

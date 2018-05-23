@@ -89,7 +89,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         //TODO 请求超时
         //TODO 文件上传等进度
 
-        if (!this.useFilter()) {
+        if (!this.useFilterByOptions(fetchOptions)) {
             //不使用过滤器处理
             //构建Request请求对象
             const request = this.buildRequest(fetchOptions);
@@ -122,6 +122,8 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                         } else {
                             return Promise.reject(result.resp[0]);
                         }
+                    }).catch(e => {
+                        return Promise.reject(e);
                     });
                 });
             }).catch((e) => {
@@ -148,6 +150,18 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         return this[method.toLowerCase()](options);
     }
 
+
+    /**
+     * 是否使用过滤器
+     * @param {FetchOption} options
+     * @return {boolean}
+     */
+    protected useFilterByOptions = (options: FetchOption) => {
+        if (options.useFilter === false) {
+            return false;
+        }
+        return this.useFilter();
+    };
 
     /**
      * 构建请求对象
