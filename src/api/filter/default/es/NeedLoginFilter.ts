@@ -1,11 +1,14 @@
-import {isNullOrUndefined} from "util";
 import {FetchOption} from "../../../option/FetchOption";
 import ApiAbstractFilter from "../../ApiAbstractFilter";
 import {ApiResp} from "../../../model/ApiResp";
-import BroadcastPlugin from "../../../../plugins/broadcast/BroadcastPlugin";
 import {ReqMethod} from "../../../enums/ReqMethod";
+import {broadcast} from "../../../../plugins/PluginModule";
 
-const broadcast = new BroadcastPlugin();
+
+/**
+ * 默认的会话状态过滤处理
+ */
+
 
 /**
  * 用户会话管理

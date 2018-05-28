@@ -46,7 +46,9 @@ export default class EsServiceProxyFactory {
      * @return {{}}
      */
     public static newProxyInstances<T>(targetService: T): T {
+        console.log("------------defaultFilter-----------",defaultFilter.length,targetService)
         if (api === null) {
+
             api = EsServiceSimpleProxyFactory.newProxyInstances<ApiClientFetch>(httpErrorHandler, defaultFilter,{
                 serializeType:SerializeType.JSON,
                 headers:{
@@ -63,7 +65,11 @@ export default class EsServiceProxyFactory {
      * @return {EsServiceProxyFactory}
      */
     public static addFilterByBegin(filter: FilterItem) {
-        defaultFilter.unshift(filter);
+        if (api === null) {
+            defaultFilter.unshift(filter);
+        }else {
+            api.filterHandler.filterList.unshift(filter);
+        }
         return EsServiceProxyFactory;
     }
 
@@ -72,7 +78,11 @@ export default class EsServiceProxyFactory {
      * @param {FilterItem} filter
      */
     public static addFilterByEnd(filter: FilterItem) {
-        defaultFilter.push(filter);
+        if (api === null) {
+            defaultFilter.push(filter);
+        }else {
+            api.filterHandler.filterList.push(filter);
+        }
         return EsServiceProxyFactory;
     }
 

@@ -109,20 +109,21 @@ export default class BroadcastPlugin implements EsPlugin {
         /**
          * 遍历数据进行广播
          */
-        eventDatum.forEach(({success, error}) => {
-            if (!isNullOrUndefined(success)) {
-                let data = success;  //TODO 做值copy
-                eventHolders.forEach((item: BroadcastEventHolder) => {
-                    item.success({data});
-                });
-            }
-            if (!isNullOrUndefined(error)) {
-
-                let data = error;//TODO 做值copy
-                eventHolders.forEach((item: BroadcastEventHolder) => {
-                    item.error({data});
-                });
-            }
+        eventDatum.forEach(({success}) => {
+            // if (!isNullOrUndefined(success)) {
+            // }
+            //TODO 做值copy
+            let data = success;
+            eventHolders.forEach((item: BroadcastEventHolder) => {
+                item.success({data});
+            });
+            // if (!isNullOrUndefined(error)) {
+            //    //TODO 做值copy
+            //     let data = error;
+            //     eventHolders.forEach((item: BroadcastEventHolder) => {
+            //         item.error({data});
+            //     });
+            // }
         });
 
         //清除广播数据
