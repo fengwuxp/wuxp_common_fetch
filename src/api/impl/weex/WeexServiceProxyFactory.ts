@@ -4,7 +4,7 @@ import {MemberSessionManager, NeedLoginFilter} from "../../filter/default/weex/N
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
 import {NeedNetworkFilter} from "../../filter/default/weex/NeedNetworkFilter";
 import ApiClientProxyFactory from "../../base/ApiClientProxyFactory";
-import {RespDataHandleFilter} from "../../filter/default/RespDataHandleFilter";
+import {RespDataHandleFilter} from "../../filter/default/weex/RespDataHandleFilter";
 import {NeedProgressBarFilter} from "../../filter/default/weex/NeedProgressBarFilter";
 import {ExecuteMethod} from "../../filter/model/FilterItem";
 

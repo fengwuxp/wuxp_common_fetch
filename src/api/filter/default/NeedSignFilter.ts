@@ -2,6 +2,7 @@ import {FetchOption} from "../../option/FetchOption";
 import {WeexStreamOption} from "../../option/WeexStreamOption";
 import ApiAbstractFilter from "../ApiAbstractFilter";
 import {apiSign} from "./ApiSginUtils";
+import {ExecuteMethod} from "../model/FilterItem";
 
 /**
  * 需要签名的过滤器
@@ -26,6 +27,8 @@ export class NeedSignFilter extends ApiAbstractFilter {
         this.clientSecret = clientSecret;
         this.channelCode = channelCode;
     }
+
+    executeMethod = ExecuteMethod.ONLY_PREV;
 
     preHandle(options: FetchOption | WeexStreamOption): boolean | Promise<boolean> {
 

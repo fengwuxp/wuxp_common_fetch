@@ -2,6 +2,7 @@ import {appMain} from "../../../../utils/ExpotrtWeexCustomModel";
 import {modal} from "../../../../utils/ExportWeexSdkModel";
 import {WeexStreamOption} from "../../../option/WeexStreamOption";
 import ApiAbstractFilter from "../../ApiAbstractFilter";
+import {ExecuteMethod} from "../../model/FilterItem";
 
 /**
  * 需要判断网络的过滤拦截
@@ -12,6 +13,8 @@ export class NeedNetworkFilter extends ApiAbstractFilter {
     constructor() {
         super();
     }
+
+    executeMethod = ExecuteMethod.ONLY_PREV;
 
     preHandle(options: WeexStreamOption): boolean | Promise<boolean> {
 

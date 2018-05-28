@@ -1,7 +1,14 @@
+import {ExecuteMethod} from "./model/FilterItem";
+
 /**
  * api filter
  */
 export interface ApiFilter<T, R> {
+
+    /**
+     * 执行方式默认为 ALL
+     */
+    executeMethod: ExecuteMethod
 
     /**
      * 请求之前的处理

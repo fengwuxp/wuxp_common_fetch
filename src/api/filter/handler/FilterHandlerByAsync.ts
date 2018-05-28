@@ -2,12 +2,8 @@ import {BaseApiOptions} from "../../base/BaseApiOptions";
 import {PostHandlerResult} from "../model/PostHandlerResult";
 import {ExecuteMethod, FilterItem} from "../model/FilterItem";
 import {FilterHandler} from "./FilterHandler";
-
-/**
- * 请求异常标志
- * @type {string}
- */
-export const REQUEST_ERROR: string = "__REQUEST_ERROR__";
+import {isNullOrUndefined} from "util";
+import {ApiResp} from "../../model/ApiResp";
 
 
 /**
@@ -50,7 +46,7 @@ export default class FilterHandlerByAsync implements FilterHandler<BaseApiOption
      * @param params 参数
      * @return {Promise<boolean|PostHandlerResult>}
      */
-    private async doFilter(options: BaseApiOptions, fnName: string, params: any): Promise<any> {
+    private async doFilter(options: BaseApiOptions, fnName: string, params: ApiResp): Promise<any> {
         const filterItems = this.filterList;
         let i = 0;
 
@@ -59,6 +55,10 @@ export default class FilterHandlerByAsync implements FilterHandler<BaseApiOption
         if (fnName === "preHandle") {
             while (i < filterItems.length) {
                 let apiFilter = filterItems[i].filter;
+                if (apiFilter.executeMethod !== ExecuteMethod.ONLY_PREV && apiFilter.executeMethod !== ExecuteMethod.ALL) {
+                    //跳过
+                    continue;
+                }
                 i++;
                 result = await apiFilter.preHandle(options);
                 //处理失败
@@ -68,13 +68,25 @@ export default class FilterHandlerByAsync implements FilterHandler<BaseApiOption
             }
             return result;
         } else {
+            //请求结果是否成功
+            const requestIsSuccess = isNullOrUndefined(params) || params.code !== 0;
             while (i < filterItems.length) {
                 let filterItem = filterItems[i];
                 i++;
                 let apiFilter = filterItem.filter;
-                if (params === REQUEST_ERROR) {
+                if (apiFilter.executeMethod === ExecuteMethod.ONLY_PREV) {
+                    //跳过
+                    continue;
+                }
+                if (requestIsSuccess) {
+                    //请求成功
+                    if (apiFilter.executeMethod === ExecuteMethod.ONLY_ERROR) {
+                        //跳过只在请求失败时才执行的filter
+                        continue;
+                    }
+                } else {
                     //请求失败
-                    if (filterItem.executeMethod !== ExecuteMethod.ALL) {
+                    if (apiFilter.executeMethod === ExecuteMethod.ONLY_SUCCESS) {
                         //跳过只在请求成功时才执行的filter
                         continue;
                     }

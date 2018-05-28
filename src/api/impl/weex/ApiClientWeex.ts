@@ -11,7 +11,6 @@ import {PostHandlerResult} from "../../filter/model/PostHandlerResult";
 import {stringify} from "querystring";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 import {FilterHandler} from "../../filter/handler/FilterHandler";
-import {REQUEST_ERROR} from "../../filter/handler/FilterHandlerByAsync";
 import {BaseApiContext} from "../../base/BaseApiOptions";
 
 
@@ -89,7 +88,6 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
                 if (!response.ok) {
                     //请求没有正确响应
                     console.error("响应状态码：" + response.status + " 状态描述：" + response.statusText);
-                    data = REQUEST_ERROR;
                 } else {
                     data = response.data;
                 }

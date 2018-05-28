@@ -15,7 +15,6 @@ import {isFunction, isNullOrUndefined} from "util";
 import {stringify} from "querystring";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 import {FilterHandler} from "../../filter/handler/FilterHandler";
-import {REQUEST_ERROR} from "../../filter/handler/FilterHandlerByAsync";
 import {BaseApiContext, BaseApiOptions} from "../../base/BaseApiOptions";
 
 /**
@@ -107,6 +106,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
 
         option.context = option.context || {} as BaseApiContext;
 
+
         let p0 = handler.preHandle(fetchOptions).then(() => {
             //构建Request请求对象
             const request = this.buildRequest(fetchOptions);
@@ -128,9 +128,11 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                 });
             }).catch((e) => {
                 //执行失败
-                return handler.postHandle(fetchOptions, REQUEST_ERROR).then((result: PostHandlerResult) => {
-                    return Promise.reject(e);
-                });
+                // return handler.postHandle(fetchOptions,null).then((result: PostHandlerResult) => {
+                //     return Promise.reject(e);
+                // });
+
+                //TODO 异常处理
             })
         });
 

@@ -1,5 +1,6 @@
 import {ApiFilter} from "./ApiFilter";
 import {PostHandlerResult} from "./model/PostHandlerResult";
+import {ExecuteMethod} from "./model/FilterItem";
 
 
 /**
@@ -10,6 +11,9 @@ export default abstract class ApiAbstractFilter<T=any, R=any> implements ApiFilt
 
     constructor() {
     }
+
+    executeMethod: ExecuteMethod = ExecuteMethod.ALL;
+
 
     public preHandle(options: T): boolean | Promise<boolean> {
         return true;

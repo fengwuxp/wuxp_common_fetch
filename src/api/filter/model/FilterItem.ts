@@ -9,6 +9,14 @@ export enum ExecuteMethod {
     //只在请求成功的时候做处理
     ONLY_SUCCESS,
 
+    //只在失败的时候执行
+    ONLY_ERROR,
+
+    //只执行前置方法
+    ONLY_PREV,
+
+    //只执行后置方法
+    ONLY_POST,
 
     ALL
 
@@ -44,8 +52,5 @@ export interface FilterItem {
      */
     filterName?: string;
 
-    /**
-     * 执行方式默认为 ONLY_SUCCESS
-     */
-    executeMethod?: ExecuteMethod
+
 }

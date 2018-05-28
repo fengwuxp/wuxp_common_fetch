@@ -1,7 +1,7 @@
 import {NeedSignFilter} from "../../filter/default/NeedSignFilter";
 import {MemberSessionManager, NeedLoginFilter} from "../../filter/default/es/NeedLoginFilter";
 import GlobalApiConfig from "../../../config/GlobalAipConfig";
-import {RespDataHandleFilter} from "../../filter/default/RespDataHandleFilter";
+import {RespDataHandleFilter} from "../../filter/default/weex/RespDataHandleFilter";
 import {buildApiClientProxy} from "./BuildApiClientProxy";
 import {FilterItem} from "../../filter/model/FilterItem";
 import EsServiceSimpleProxyFactory from "./EsServiceSimpleProxyFactory";
@@ -18,9 +18,6 @@ const defaultFilter: Array<FilterItem> = [
     },
     {
         filter: new NeedLoginFilter(MemberSessionManager)
-    },
-    {
-        filter: new RespDataHandleFilter()
     }
 ];
 
@@ -46,12 +43,11 @@ export default class EsServiceProxyFactory {
      * @return {{}}
      */
     public static newProxyInstances<T>(targetService: T): T {
-        console.log("------------defaultFilter-----------",defaultFilter.length,targetService)
         if (api === null) {
 
-            api = EsServiceSimpleProxyFactory.newProxyInstances<ApiClientFetch>(httpErrorHandler, defaultFilter,{
-                serializeType:SerializeType.JSON,
-                headers:{
+            api = EsServiceSimpleProxyFactory.newProxyInstances<ApiClientFetch>(httpErrorHandler, defaultFilter, {
+                serializeType: SerializeType.JSON,
+                headers: {
                     'Content-Type': 'application/json;charset=UTF-8'
                 }
             });
@@ -67,7 +63,7 @@ export default class EsServiceProxyFactory {
     public static addFilterByBegin(filter: FilterItem) {
         if (api === null) {
             defaultFilter.unshift(filter);
-        }else {
+        } else {
             api.filterHandler.filterList.unshift(filter);
         }
         return EsServiceProxyFactory;
@@ -80,7 +76,7 @@ export default class EsServiceProxyFactory {
     public static addFilterByEnd(filter: FilterItem) {
         if (api === null) {
             defaultFilter.push(filter);
-        }else {
+        } else {
             api.filterHandler.filterList.push(filter);
         }
         return EsServiceProxyFactory;
