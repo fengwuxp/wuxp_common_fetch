@@ -107,34 +107,41 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         option.context = option.context || {} as BaseApiContext;
 
 
-        let p0 = handler.preHandle(fetchOptions).then(() => {
-            //构建Request请求对象
-            const request = this.buildRequest(fetchOptions);
-            return fetch(request).then((response: Response) => {
-                return this.checkStatus(response, fetchOptions);
-            }).then((response: Response) => {
-                return this.parse(response, dataType).then((data) => {
-                    return handler.postHandle(fetchOptions, data).then((result: PostHandlerResult) => {
-                        if (result.isSuccess) {
-                            //数据设置到context中
-                            option.context.respData = result.resp[0];
-                            return Promise.resolve(result.resp[0].data);
-                        } else {
-                            return Promise.reject(result.resp[0]);
-                        }
-                    }).catch(e => {
-                        return Promise.reject(e);
+        let p0 = new Promise((resolve, reject) => {
+            handler.preHandle(fetchOptions).then(() => {
+                //构建Request请求对象
+                const request = this.buildRequest(fetchOptions);
+                return fetch(request).then((response: Response) => {
+                    return this.checkStatus(response, fetchOptions);
+                }).then((response: Response) => {
+                    return this.parse(response, dataType).then((data) => {
+                        return handler.postHandle(fetchOptions, data).then((result: PostHandlerResult) => {
+                            if (result.isSuccess) {
+                                //数据设置到context中
+                                option.context.respData = result.resp[0];
+                                resolve(result.resp[0].data);
+                            } else {
+                                reject(result.resp[0]);
+                            }
+                        }).catch(e => {
+                            console.error("handler postHandle", e);
+                            reject(e);
+                        });
                     });
-                });
+                }).catch((e) => {
+                    //执行失败
+                    // return handler.postHandle(fetchOptions,null).then((result: PostHandlerResult) => {
+                    //     return Promise.reject(e);
+                    // });
+                    console.error("fetch request", e);
+                    //TODO 异常处理
+                    reject(e);
+                })
             }).catch((e) => {
-                //执行失败
-                // return handler.postHandle(fetchOptions,null).then((result: PostHandlerResult) => {
-                //     return Promise.reject(e);
-                // });
-
-                //TODO 异常处理
-            })
+                console.error("handler preHandle", e);
+            });
         });
+
 
         p0.setContext<BaseApiContext>(option.context);
 
