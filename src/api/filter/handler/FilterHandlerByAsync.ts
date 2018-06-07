@@ -55,11 +55,11 @@ export default class FilterHandlerByAsync implements FilterHandler<BaseApiOption
         if (fnName === "preHandle") {
             while (i < filterItems.length) {
                 let apiFilter = filterItems[i].filter;
+                i++;
                 if (apiFilter.executeMethod !== ExecuteMethod.ONLY_PREV && apiFilter.executeMethod !== ExecuteMethod.ALL) {
                     //跳过
                     continue;
                 }
-                i++;
                 result = await apiFilter.preHandle(options);
                 //处理失败
                 if (!result) {
