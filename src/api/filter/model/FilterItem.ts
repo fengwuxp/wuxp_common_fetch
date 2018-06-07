@@ -53,4 +53,8 @@ export interface FilterItem {
     filterName?: string;
 
 
+    /**
+     * 执行方式
+     */
+    executeMethod?: ExecuteMethod
 }
