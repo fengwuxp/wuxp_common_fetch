@@ -26,7 +26,7 @@ const clipboard: WeexClipboardModule = weex.requireModule('clipboard');
 const dom: WeexDomModule = weex.requireModule('dom');
 const globalEvent: WeexGlobalEventModule = weex.requireModule('globalEvent');
 const meta: WeexMetaModule = weex.requireModule('meta');
-const WebSocket: WeexWebSocketModule = weex.requireModule('WebSocket');
+const webSocket: WeexWebSocketModule = weex.requireModule('webSocket');
 const picker: WeexPickerModule = weex.requireModule('picker');
 const modal: WeexModalModule = weex.requireModule('modal');
 const navigator: WeexNavigatorModule = weex.requireModule('navigator');
@@ -40,7 +40,7 @@ const timer: WeexTimerModule = weex.requireModule("timer");
 //此处为了导入地方能够进行结构赋值，不能使用 export default
 export {
     animation,
-    WebSocket,
+    webSocket,
     picker,
     clipboard,
     dom,
