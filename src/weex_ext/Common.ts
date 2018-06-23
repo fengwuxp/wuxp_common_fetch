@@ -91,7 +91,7 @@ if (isWeb()) {
          */
         isWXInstalled(callback = (isInstall: boolean) => {
         }) {
-            return true;
+            return callback(true);
         },
 
         /**
@@ -106,7 +106,7 @@ if (isWeb()) {
          */
         isSinaWeiboInstalled(callback = (isInstall: boolean) => {
         }) {
-            return true;
+            return callback(true);
         },
 
         /**
@@ -116,7 +116,7 @@ if (isWeb()) {
          */
         isSinaWeiboSSO(callback = (isInstall: boolean) => {
         }) {
-            return true;
+            return callback(true);
         },
 
     };

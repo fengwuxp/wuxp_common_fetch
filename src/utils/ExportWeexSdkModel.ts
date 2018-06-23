@@ -14,6 +14,7 @@ import {WeexStreamModule} from "weex/src/sdk/model/stream/";
 import {WeexStorageModule} from "weex/src/sdk/model/storage";
 import {WeexNavigatorModule} from "weex/src/sdk/model/navigator/";
 import {WeexModalModule} from "weex/src/sdk/model/modal/";
+import {WeexWebSocketModule} from "weex/src/sdk/model/webSocket";
 
 if (process.env.IS_WEB) {
     require("../weex_ext/Picker");
@@ -25,7 +26,7 @@ const clipboard: WeexClipboardModule = weex.requireModule('clipboard');
 const dom: WeexDomModule = weex.requireModule('dom');
 const globalEvent: WeexGlobalEventModule = weex.requireModule('globalEvent');
 const meta: WeexMetaModule = weex.requireModule('meta');
-const WebSocket: WeexStorageModule = weex.requireModule('WebSocket');
+const WebSocket: WeexWebSocketModule = weex.requireModule('WebSocket');
 const picker: WeexPickerModule = weex.requireModule('picker');
 const modal: WeexModalModule = weex.requireModule('modal');
 const navigator: WeexNavigatorModule = weex.requireModule('navigator');
