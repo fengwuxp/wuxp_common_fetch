@@ -73,7 +73,7 @@ const sendLoginBroadcast = (data: any, callback: Function): void => {
 
     //发送登录
     broadcast.send(AGENT_LOGIN_CATEGORY, AGENT_LOGIN_EVENT, data);
-
+    callback();
     //3秒后恢复标记位置
     timer.setTimeout(() => {
         LOGIN_BROADCAST_IS_SEND = false;
