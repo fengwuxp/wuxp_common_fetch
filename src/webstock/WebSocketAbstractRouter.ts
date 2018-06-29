@@ -12,11 +12,15 @@ export default abstract class WebSocketAbstractRouter implements WebSocketMessag
 
     protected messageHandler: WebSocketMessageHandler;
 
-    constructor(...handlers: WebSocketMessageHandler[]) {
+    constructor(handlers: WebSocketMessageHandler[]) {
         let handler = {};
+        console.log("-----handlers---->", handlers);
         //合并
-        handlers.forEach(item => (Object.assign(handler, item)));
+        handlers.forEach(item => {
+            handler = {...handler, ...item};
+        });
         this.messageHandler = handler;
+        console.log("------- this.messageHandler----->", this.messageHandler);
     }
 
     abstract routes: (event: MessageEvent, socket: WebSocket) => void;
