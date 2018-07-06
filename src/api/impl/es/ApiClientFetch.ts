@@ -17,6 +17,8 @@ import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 import {FilterHandler} from "../../filter/handler/FilterHandler";
 import {BaseApiContext, BaseApiOptions} from "../../base/BaseApiOptions";
 
+polyfill();
+
 /**
  * 默认的请求头配置
  * @type {{Accept: string; "Content-Type": string}}
@@ -26,7 +28,17 @@ const DEFAULT_HEADERS: object = {
     'Content-Type': 'application/x-www-form-urlencoded'
 };
 
-polyfill();
+// RequestInit 属性name列表
+const RequestInitAttrNames: string[] = [
+    "referrer",
+    "referrerPolicy",
+    "credentials",
+    "redirect",
+    "cache",
+    "integrity",
+    "keepalive",
+    "window"
+];
 
 
 /**
@@ -172,6 +184,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         return this.useFilter();
     };
 
+
     /**
      * 构建请求对象
      * @param {FetchOption} options
@@ -184,15 +197,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
             headers,
             data,
             queryPrams,
-            referrer,
-            referrerPolicy,
             mode,
-            credentials,
-            redirect,
-            cache,
-            integrity,
-            keepalive,
-            window,
             serializeType
         } = options;
 
@@ -239,21 +244,21 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
 
 
         //构建Request请求对象
-
-        return new Request(url, {
+        const reqOptions = {
             method: reqMethodElement,
             headers: requestHeaders,
             body,
-            referrer,
-            referrerPolicy,
-            mode,
-            credentials,
-            redirect,
-            cache,
-            integrity,
-            keepalive,
-            window
+            mode
+        };
+
+        RequestInitAttrNames.forEach((name) => {
+            const attr = reqOptions[name];
+            if (isNullOrUndefined(attr)) {
+                return;
+            }
+            reqOptions[name] = attr;
         });
+        return new Request(url, reqOptions);
     }
 
 
