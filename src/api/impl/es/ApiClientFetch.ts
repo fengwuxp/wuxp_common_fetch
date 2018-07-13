@@ -16,6 +16,8 @@ import {stringify} from "querystring";
 import {HttpErrorHandler} from "../../error/HttpErrorHandler";
 import {FilterHandler} from "../../filter/handler/FilterHandler";
 import {BaseApiContext, BaseApiOptions} from "../../base/BaseApiOptions";
+import {TaskStatus} from "../../../task/Task";
+import ThrowAwayException from "../../../task/exception/ThrowAwayException";
 
 polyfill();
 
@@ -88,6 +90,10 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
      */
     fetch(option: FetchOption): Promise<any> {
 
+        this.status=TaskStatus.PROCESSING;
+
+
+
         const fetchOptions: FetchOption = {
             ...this.DEFAULT_FETCH_OPTION,
             ...option,
@@ -128,6 +134,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                 }).then((response: Response) => {
                     return this.parse(response, dataType).then((data) => {
                         return handler.postHandle(fetchOptions, data).then((result: PostHandlerResult) => {
+
                             if (result.isSuccess) {
                                 //数据设置到context中
                                 option.context.respData = result.resp[0];
@@ -148,12 +155,24 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                     console.error("fetch request", e);
                     //TODO 异常处理
                     reject(e);
+                    this.completed();
                 })
             }).catch((e) => {
                 console.error("handler preHandle", e);
             });
         });
 
+
+        //处理中断逻辑
+        p0.finally((data)=>{
+            if (this.isThrowAway()){
+                //被丢弃了
+                 throw new ThrowAwayException("本次请求已经被中断！");
+            }else {
+                this.completed();
+            }
+            return data;
+        });
 
         p0.setContext<BaseApiContext>(option.context);
 
@@ -170,6 +189,8 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         let method = ReqMethod[options.method];
         return this[method.toLowerCase()](options);
     }
+
+
 
 
     /**
