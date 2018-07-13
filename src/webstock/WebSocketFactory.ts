@@ -1,8 +1,8 @@
-import {isWeb} from "../utils/WeexEnvUtil";
 import {WebSocketMessageRouter} from "./WebSocketMessageRouter";
 import {WebSocketLifeCycleHandler} from "./WebSocketHandler";
+import {isFunction} from "util";
 
-const IS_WEB = isWeb();
+const IS_WEB = document != null && isFunction(document.getElementById);
 
 
 /**
