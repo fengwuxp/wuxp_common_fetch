@@ -90,8 +90,11 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
      */
     fetch(option: FetchOption): Promise<any> {
 
-        this.status=TaskStatus.PROCESSING;
-
+        if (this.status !== TaskStatus.WAIT) {
+            //不是等待状态的 return
+            return;
+        }
+        this.status = TaskStatus.PROCESSING;
 
 
         const fetchOptions: FetchOption = {
@@ -102,6 +105,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         const {
             dataType
         } = fetchOptions;
+        this.requestOptions = fetchOptions;
 
         //TODO 请求超时
         //TODO 文件上传等进度
@@ -164,11 +168,11 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
 
 
         //处理中断逻辑
-        p0.finally((data)=>{
-            if (this.isThrowAway()){
+        p0.finally((data) => {
+            if (this.isThrowAway()) {
                 //被丢弃了
-                 throw new ThrowAwayException("本次请求已经被中断！");
-            }else {
+                throw new ThrowAwayException("本次请求已经被中断！");
+            } else {
                 this.completed();
             }
             return data;
@@ -189,8 +193,6 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         let method = ReqMethod[options.method];
         return this[method.toLowerCase()](options);
     }
-
-
 
 
     /**

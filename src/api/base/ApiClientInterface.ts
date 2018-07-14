@@ -3,11 +3,12 @@ import {HttpErrorHandler} from "../error/HttpErrorHandler";
 import {FilterHandler} from "../filter/handler/FilterHandler";
 import {Task, TaskStatus} from "../../task/Task";
 import AbstractTask from "../../task/AbstractTask";
+import {BaseApiOptions} from "./BaseApiOptions";
 
 /**
  * Api客户端请求接口
  */
-export abstract class ApiClientInterface<T> extends AbstractTask{
+export abstract class ApiClientInterface<T extends BaseApiOptions> extends AbstractTask {
 
     /**
      * 是否使用过滤器机制
@@ -20,6 +21,7 @@ export abstract class ApiClientInterface<T> extends AbstractTask{
      */
     protected httpErrorHandler: HttpErrorHandler;
 
+    protected requestOptions: T;
 
 
     constructor(httpErrorHandler: HttpErrorHandler, filterHandler: FilterHandler) {
@@ -27,7 +29,6 @@ export abstract class ApiClientInterface<T> extends AbstractTask{
         this.httpErrorHandler = httpErrorHandler;
         this.filterHandler = filterHandler;
     }
-
 
 
     protected useFilter = () => {
@@ -60,13 +61,11 @@ export abstract class ApiClientInterface<T> extends AbstractTask{
     abstract dispatch(...p): Promise<any> ;
 
 
-
-
     /**
      * 请求已经完成
      */
-    completed= () => {
-        this.status=TaskStatus.COMPLETED;
+    completed = () => {
+        this.status = TaskStatus.COMPLETED;
     };
 
 
@@ -74,9 +73,12 @@ export abstract class ApiClientInterface<T> extends AbstractTask{
      * 放弃本次请求
      */
     throwAway = () => {
-        this.status=TaskStatus.THROW_AWAY;
+        this.status = TaskStatus.THROW_AWAY;
+        if (this.requestOptions != null) {
+            //执行后置处理
+            this.filterHandler.postHandle(this.requestOptions, {});
+        }
     };
-
 
 
 }
