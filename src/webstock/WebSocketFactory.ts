@@ -40,7 +40,9 @@ export interface InitWebStockOptions {
 export function buildWebSocket(options: InitWebStockOptions): WebSocketHolder {
 
 
-    return new DefaultWebSocketHolder(options);
+    const defaultWebSocketHolder = new DefaultWebSocketHolder(options);
+    defaultWebSocketHolder.connection();
+    return defaultWebSocketHolder;
 }
 
 /**
@@ -63,7 +65,7 @@ export interface WebSocketHolder {
      * 是否允许重连
      * @param {boolean} allowReconnect
      */
-    close: (allowReconnect: boolean) => void;
+    close: (allowReconnect?: boolean) => void;
 }
 
 
@@ -83,7 +85,7 @@ class DefaultWebSocketHolder implements WebSocketHolder {
      * 是否允许重新连接
      * @type {boolean}
      */
-    private allowReconnect?: boolean = true;
+    private allowReconnect: boolean = true;
 
 
     constructor(options: InitWebStockOptions) {
