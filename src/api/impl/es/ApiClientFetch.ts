@@ -99,7 +99,6 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         const {
             dataType
         } = fetchOptions;
-        this.requestOptions = fetchOptions;
 
         //TODO 请求超时
         //TODO 文件上传等进度
@@ -153,7 +152,6 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
                     console.error("fetch request", e);
                     //TODO 异常处理
                     reject(e);
-                    this.completed();
                 })
             }).catch((e) => {
                 console.error("handler preHandle", e);
