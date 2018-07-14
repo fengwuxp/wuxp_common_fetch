@@ -176,11 +176,15 @@ class ApiClientWeex extends ApiClientInterface<WeexStreamOption> {
         }
 
         const queryString: string = stringify(queryPrams);
-        if (url.indexOf("?") > 0) {
-            url += `&${queryString}`;
-        } else {
-            url += `?${queryString}`;
+        if (queryString.length === 0) {
+            //是否有查询字符串
+            if (url.indexOf("?") > 0) {
+                url += `&${queryString}`;
+            } else {
+                url += `?${queryString}`;
+            }
         }
+
 
         if (dataType === DataType.JSONP) {
             method = ReqMethod.GET;    //如果是jsonp请求，强制设置为get方式提交

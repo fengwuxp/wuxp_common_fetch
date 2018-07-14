@@ -240,7 +240,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         }
 
         //查询参数
-        let queryString: string = stringify(queryPrams);
+        const queryString: string = stringify(queryPrams);
         if (queryString.length > 0) {
             if (url.indexOf("?") > 0) {
                 url = `&${queryString}`;

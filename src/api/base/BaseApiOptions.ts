@@ -14,7 +14,7 @@ export interface BaseApiOptions {
     /**
      * 查询参数
      */
-    queryPrams?: any;
+    queryPrams?: object;
 
     /**
      * 请求方法
@@ -29,7 +29,7 @@ export interface BaseApiOptions {
     /**
      * 请求头
      */
-    headers?: any;
+    headers?: object;
 
     /**
      * 请求参数，请求需要
