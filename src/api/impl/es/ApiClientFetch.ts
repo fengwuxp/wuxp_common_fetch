@@ -133,10 +133,20 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
             handler.preHandle(fetchOptions).then(() => {
                 //构建Request请求对象
                 const request = this.buildRequest(fetchOptions);
+                if (this.isThrowAway()) {
+                    //被废弃
+                    reject(new ThrowAwayException());
+                    return;
+                }
                 return fetch(request).then((response: Response) => {
                     return this.checkStatus(response, fetchOptions);
                 }).then((response: Response) => {
                     return this.parse(response, dataType).then((data) => {
+                        if (this.isThrowAway()) {
+                            //被废弃
+                            reject(new ThrowAwayException());
+                            return;
+                        }
                         return handler.postHandle(fetchOptions, data).then((result: PostHandlerResult) => {
 
                             if (result.isSuccess) {
@@ -170,8 +180,8 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         //处理中断逻辑
         p0.finally((data) => {
             if (this.isThrowAway()) {
-                //被丢弃了
-                throw new ThrowAwayException("本次请求已经被中断！");
+                //被丢弃了 本次请求已经被中断
+                throw new ThrowAwayException();
             } else {
                 this.completed();
             }

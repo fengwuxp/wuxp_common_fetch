@@ -1,6 +1,6 @@
 import {WebSocketMessageRouter} from "./WebSocketMessageRouter";
 import {WebSocketLifeCycleHandler} from "./WebSocketHandler";
-import {InitWebStockOptions} from "./WebSocketFactory";
+import {InitWebStockOptions, WebSocketHolder} from "./WebSocketFactory";
 import {WebSocketMessageHandler} from "./WebSocketHandler";
 
 /**
@@ -10,7 +10,15 @@ import {WebSocketMessageHandler} from "./WebSocketHandler";
  **/
 export default abstract class WebSocketAbstractRouter implements WebSocketMessageRouter, WebSocketLifeCycleHandler {
 
+    /**
+     * 消息处理器
+     */
     protected messageHandler: WebSocketMessageHandler;
+
+    /**
+     * webSocket实例的持有者
+     */
+    protected _webSocketHolder: WebSocketHolder;
 
     constructor(handlers: WebSocketMessageHandler[]) {
         let handler = {};
@@ -23,16 +31,27 @@ export default abstract class WebSocketAbstractRouter implements WebSocketMessag
         // console.log("------- this.messageHandler----->", this.messageHandler);
     }
 
+
+    set webSocketHolder(value: WebSocketHolder) {
+        this._webSocketHolder = value;
+    }
+
     abstract routes: (event: MessageEvent, socket: WebSocket) => void;
 
     abstract onClose: (event: CloseEvent, socket: WebSocket) => void;
 
     abstract onError: (event: Event, options: InitWebStockOptions) => void;
 
+
+    /**
+     * 发送心跳包
+     */
+    protected abstract sendHeartbeatPackage: (socket: WebSocket) => void;
+
     onMessage = this.routes;
 
     onOpen = (event: Event, socket: WebSocket) => {
-
+        this.sendHeartbeatPackage(socket);
     }
 
 

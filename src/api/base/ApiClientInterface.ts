@@ -1,9 +1,10 @@
 import "../../../types/PromiseExt";
 import {HttpErrorHandler} from "../error/HttpErrorHandler";
 import {FilterHandler} from "../filter/handler/FilterHandler";
-import {Task, TaskStatus} from "../../task/Task";
+import {TaskStatus} from "../../task/Task";
 import AbstractTask from "../../task/AbstractTask";
 import {BaseApiOptions} from "./BaseApiOptions";
+
 
 /**
  * Api客户端请求接口
@@ -21,6 +22,9 @@ export abstract class ApiClientInterface<T extends BaseApiOptions> extends Abstr
      */
     protected httpErrorHandler: HttpErrorHandler;
 
+    /**
+     * 请求对象
+     */
     protected requestOptions: T;
 
 
