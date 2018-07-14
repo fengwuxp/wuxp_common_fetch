@@ -1,8 +1,7 @@
 import {WebSocketMessageRouter} from "./WebSocketMessageRouter";
 import {WebSocketLifeCycleHandler} from "./WebSocketHandler";
-import {isFunction} from "util";
+import {RunEnvType} from "../enums/RunEnvType";
 
-const IS_WEB = document != null && isFunction(document.getElementById);
 
 
 /**
@@ -29,7 +28,12 @@ export interface InitWebStockOptions {
     /**
      * 连接协议
      */
-    protocols?: string | string[]
+    protocols?: string | string[];
+
+    /**
+     * 平台
+     */
+    runEnvType: RunEnvType;
 }
 
 /**
@@ -115,15 +119,17 @@ class DefaultWebSocketHolder implements WebSocketHolder {
 
 
     private createWebSocket = () => {
-        const {url, router, lifeCycleHandler, protocols} = this.options;
+        const {url, runEnvType, router, lifeCycleHandler, protocols} = this.options;
 
         console.log("==准备连接websocket，url==> " + url);
         let ws;
-        if (IS_WEB) {
-            ws = new WebSocket(url, protocols);
-        } else {
+        if (RunEnvType.RAX === runEnvType || RunEnvType.WEEX === runEnvType) {
             ws = require("../utils/ExportWeexSdkModel").webSocket;
             ws.WebSocket(url, protocols  as string);
+        } else if (RunEnvType.WEB === runEnvType) {
+            ws = new WebSocket(url, protocols);
+        } else {
+            throw new Error(`不支持的平台类型：${runEnvType}`);
         }
 
         ws.onopen = (enent: Event) => {

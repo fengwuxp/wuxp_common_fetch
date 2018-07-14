@@ -1,5 +1,5 @@
 import {TaskManager} from "./TaskManager";
-import {Task} from "../Task";
+import {Task} from "./Task";
 import TimerTask from "./timer/TimerTask";
 
 /**
@@ -11,7 +11,7 @@ export default abstract class AbstractTaskManager implements TaskManager {
 
     /**
      * 任务队列
-     * @type {any[]}
+     * @type {Task[]}
      */
     private _taskQueue: Task[] = [];
 
@@ -34,7 +34,6 @@ export default abstract class AbstractTaskManager implements TaskManager {
     get taskQueue(): Task[] {
         return this._taskQueue;
     }
-
 
 
 }

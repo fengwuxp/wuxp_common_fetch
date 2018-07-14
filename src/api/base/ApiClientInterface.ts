@@ -1,15 +1,13 @@
 import "../../../types/PromiseExt";
 import {HttpErrorHandler} from "../error/HttpErrorHandler";
 import {FilterHandler} from "../filter/handler/FilterHandler";
-import {TaskStatus} from "../../task/Task";
-import AbstractTask from "../../task/AbstractTask";
 import {BaseApiOptions} from "./BaseApiOptions";
 
 
 /**
  * Api客户端请求接口
  */
-export abstract class ApiClientInterface<T extends BaseApiOptions> extends AbstractTask {
+export abstract class ApiClientInterface<T extends BaseApiOptions> {
 
     /**
      * 是否使用过滤器机制
@@ -22,14 +20,8 @@ export abstract class ApiClientInterface<T extends BaseApiOptions> extends Abstr
      */
     protected httpErrorHandler: HttpErrorHandler;
 
-    /**
-     * 请求对象
-     */
-    protected requestOptions: T;
-
 
     constructor(httpErrorHandler: HttpErrorHandler, filterHandler: FilterHandler) {
-        super();
         this.httpErrorHandler = httpErrorHandler;
         this.filterHandler = filterHandler;
     }
@@ -63,26 +55,6 @@ export abstract class ApiClientInterface<T extends BaseApiOptions> extends Abstr
      * @param p 不定项参数，有具体的实现去解释
      */
     abstract dispatch(...p): Promise<any> ;
-
-
-    /**
-     * 请求已经完成
-     */
-    completed = () => {
-        this.status = TaskStatus.COMPLETED;
-    };
-
-
-    /**
-     * 放弃本次请求
-     */
-    throwAway = () => {
-        this.status = TaskStatus.THROW_AWAY;
-        if (this.requestOptions != null) {
-            //执行后置处理
-            this.filterHandler.postHandle(this.requestOptions, {});
-        }
-    };
 
 
 }
