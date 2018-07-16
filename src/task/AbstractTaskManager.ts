@@ -1,5 +1,5 @@
 import {TaskManager} from "./TaskManager";
-import {Task} from "./Task";
+import {Task, TaskStatus} from "./Task";
 import TimerTask from "./timer/TimerTask";
 
 /**
@@ -13,27 +13,33 @@ export default abstract class AbstractTaskManager implements TaskManager {
      * 任务队列
      * @type {Task[]}
      */
-    private _taskQueue: Task[] = [];
+    public taskQueue: Task[] = [];
 
 
-    push = (task: TimerTask) => {
-        this._taskQueue.push(task);
-        return this._taskQueue.length;
-    };
-
-
-    remove = (task: TimerTask) => {
-        let index = this._taskQueue.indexOf(task);
-        if (index >= 0) {
-            this._taskQueue.splice(index, 1);
+    push = (task: Task) => {
+        if (task == null) {
+            return this.taskQueue.length;
         }
-        return this._taskQueue.length;
+        this.taskQueue.push(task);
+        return this.taskQueue.length;
     };
 
 
-    get taskQueue(): Task[] {
-        return this._taskQueue;
-    }
+    remove = (task: Task) => {
+        if (task == null) {
+            return this.taskQueue.length;
+        }
+        let index = this.taskQueue.indexOf(task);
+
+        if (task.getTaskStatus() !== TaskStatus.COMPLETED) {
+            //未结束的任务直接放弃
+            task.throwAway();
+        }
+        if (index >= 0) {
+            this.taskQueue.splice(index, 1);
+        }
+        return this.taskQueue.length;
+    };
 
 
 }
