@@ -51,6 +51,7 @@ export default class TimerTask extends AbstractTask {
     };
 
 
+
     throwAway = () => {
         if (TimerTaskType.ONCE === this.taskType) {
             DEFAULT_TIMER.clearTimeout(this.timerId);

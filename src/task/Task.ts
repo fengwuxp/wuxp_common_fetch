@@ -6,6 +6,8 @@ export interface Task {
 
     getTaskStatus:()=>TaskStatus;
 
+    getTaskName?:()=>string;
+
     /**
      * 等待
      */
