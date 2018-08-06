@@ -256,7 +256,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
         } as RequestInit;
 
         RequestInitAttrNames.forEach((name) => {
-            const attr = reqOptions[name];
+            const attr = options[name];
             if (isNullOrUndefined(attr)) {
                 return;
             }

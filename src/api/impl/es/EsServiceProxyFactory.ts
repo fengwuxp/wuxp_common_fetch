@@ -8,6 +8,7 @@ import EsServiceSimpleProxyFactory from "./EsServiceSimpleProxyFactory";
 import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
 import ApiClientFetch from "./ApiClientFetch";
 import {SerializeType} from "../../option/FetchOption";
+import {ApiClientInterface} from "../../base/ApiClientInterface";
 
 const MemberSessionManager: MemberSessionManager = require("../../../../../../src/session/MemberSessionManagerImpl").default;
 
@@ -25,7 +26,7 @@ const defaultFilter: Array<FilterItem> = [
 const httpErrorHandler: FetchHttpErrorHandler = new FetchHttpErrorHandler();
 
 
-let api = null;
+let api:ApiClientInterface = null;
 
 
 /**
@@ -81,5 +82,9 @@ export default class EsServiceProxyFactory {
         }
         return EsServiceProxyFactory;
     }
+
+    // public static  getApiClient():ApiClientInterface {
+    //     return api;
+    // }
 
 }

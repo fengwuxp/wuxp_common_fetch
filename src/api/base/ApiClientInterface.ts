@@ -13,7 +13,7 @@ export abstract class ApiClientInterface<T extends BaseApiOptions> {
      * 是否使用过滤器机制
      * @type {boolean}
      */
-    protected filterHandler: FilterHandler;
+    filterHandler: FilterHandler;
 
     /**
      * http错误处理者

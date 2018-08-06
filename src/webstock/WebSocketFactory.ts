@@ -99,7 +99,7 @@ class DefaultWebSocketHolder implements WebSocketHolder {
 
     /**
      * 关闭
-     * @param {boolean} allowReconnect
+     * @param {boolean} allowReconnect 是否允许重连
      */
     close = (allowReconnect: boolean = false) => {
         this.webSocket.close();

@@ -6,19 +6,23 @@ if (isWeb()) {
 
         /**
          * zbar扫码
+         * @param hiddenExchange 是否隐藏二维码/条码切换（0，false;1,true）
+         * @param hiddenImportPhoto 是否隐藏导入图片（0，false;1,true）
          * @param success
          * @param error
          */
-        scanWithZXing:(success=()=>{},error=()=>{})=>{
+        scanWithZXing:(hiddenExchange:number,hiddenImportPhoto:number,success=()=>{},error=()=>{})=>{
             console.log("调用扫码模块!,web暂不支持");
         },
 
         /**
          * 使用zbar扫码
+         * @param hiddenExchange 是否隐藏二维码/条码切换（0，false;1,true）
+         * @param hiddenImportPhoto 是否隐藏导入图片（0，false;1,true）
          * @param success
          * @param error
          */
-        scanWithZbar:(success=()=>{},error=()=>{})=>{
+        scanWithZbar:(hiddenExchange:number,hiddenImportPhoto:number,success=()=>{},error=()=>{})=>{
             console.log("调用扫码模块!,web暂不支持");
         }
     };

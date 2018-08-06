@@ -12,7 +12,7 @@ import {ApiResp} from "../../model/ApiResp";
  */
 export default class FilterHandlerByAsync implements FilterHandler<BaseApiOptions> {
 
-    protected filterList: FilterItem[];
+     filterList: FilterItem[];
 
     constructor(filterList: FilterItem[]) {
         this.filterList = filterList;
