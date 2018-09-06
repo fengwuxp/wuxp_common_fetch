@@ -218,6 +218,7 @@ export default class ApiClientFetch extends ApiClientInterface<FetchOption> {
 
         const reqMethodElement = ReqMethod[method];
 
+        //是否为完整的url
         if (!(url.startsWith("http://") || url.startsWith("https://"))) {
             url = GlobalApiConfig.API_BASE_URL + url;
         }

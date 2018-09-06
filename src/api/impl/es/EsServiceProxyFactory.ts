@@ -7,7 +7,7 @@ import {FilterItem} from "../../filter/model/FilterItem";
 import EsServiceSimpleProxyFactory from "./EsServiceSimpleProxyFactory";
 import FetchHttpErrorHandler from "../../error/FetchHttpErrorHandler";
 import ApiClientFetch from "./ApiClientFetch";
-import {SerializeType} from "../../option/FetchOption";
+import {FetchOption, SerializeType} from "../../option/FetchOption";
 import {ApiClientInterface} from "../../base/ApiClientInterface";
 
 const MemberSessionManager: MemberSessionManager = require("../../../../../../src/session/MemberSessionManagerImpl").default;
@@ -26,7 +26,7 @@ const defaultFilter: Array<FilterItem> = [
 const httpErrorHandler: FetchHttpErrorHandler = new FetchHttpErrorHandler();
 
 
-let api:ApiClientInterface = null;
+let api:ApiClientInterface<FetchOption> = null;
 
 
 /**
