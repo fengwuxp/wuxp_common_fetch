@@ -13,7 +13,7 @@ import {broadcast} from "../../../../plugins/PluginModule";
 /**
  * 用户会话管理
  */
-export interface MemberSessionManager<T=any> {
+export interface MemberSessionManager<T = any> {
 
     /**
      * 获取当前登录用户
@@ -107,6 +107,9 @@ export class NeedLoginFilter extends ApiAbstractFilter {
             }
             let promise: Promise<any> = this.memberSessionManager.getCurrentLoginMember();
             promise.then((memberInfo) => {
+                if (memberInfo == null) {
+                    return;
+                }
                 tokenHandle(memberInfo['token'], options);
             })['finally'](() => {
                 resolve(true);
