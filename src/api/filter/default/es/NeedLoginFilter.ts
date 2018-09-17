@@ -111,6 +111,9 @@ export class NeedLoginFilter extends ApiAbstractFilter {
                     return;
                 }
                 tokenHandle(memberInfo['token'], options);
+            }).catch((e)=>{
+                //忽略
+                // console.log(e);
             })['finally'](() => {
                 resolve(true);
             })
