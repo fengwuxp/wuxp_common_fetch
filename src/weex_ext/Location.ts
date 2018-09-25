@@ -16,7 +16,7 @@ if (isWeb()) {
         getMyLocation(flag,succ = (params:any) => {
         }, fail = () => {
         }){
-            console.log("浏览器暂不支持改方法");
+            console.log("浏览器暂不支持该方法");
             succ({
                 district:"杨桥西路298号",
                 address:"福州市鼓楼区杨桥西路298号",

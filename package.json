@@ -13,7 +13,8 @@
     "fetch"
   ],
   "scripts": {
-    "run_publish": "npm publish"
+    "run_publish": "npm publish",
+    "build_ts": "rm -rf ./lib && node ./scripts/build.js"
   },
   "repository": {
     "type": "git",

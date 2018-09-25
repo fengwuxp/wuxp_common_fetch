@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+//    "esModuleInterop":true,
+    "allowSyntheticDefaultImports": false,
+//    "compileOnSave": false,
+//    "emitDecoratorMetadata": true,
+//    "experimentalDecorators": true,
+    "module": "esnext",
+    "target": "esnext",
+    "sourceMap": false,
+//    "allowJs": true,
+    "baseUrl": "./src",
+    "outDir": "./lib",
+    "types": [
+      "node",
+      "webpack"
+    ],
+    "lib": [
+      "esnext",
+      "dom",
+      "es6",
+      "es2015",
+      "es2015.promise"
+    ]
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
