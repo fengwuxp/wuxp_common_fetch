@@ -43,11 +43,10 @@ export default abstract class WebSocketAbstractRouter implements WebSocketMessag
     abstract onError: (event: Event, options: InitWebStockOptions) => void;
 
 
-
-
-    onMessage = this.routes;
+    onMessage = null;
 
     onOpen = (event: Event, socket: WebSocket) => {
+        this.onMessage = this.routes;
         this.sendHeartbeatPackage(socket);
     };
 
