@@ -1,6 +1,6 @@
 import {NeedSignFilter} from "../../filter/default/NeedSignFilter";
 import {MemberSessionManager, NeedLoginFilter} from "../../filter/default/es/NeedLoginFilter";
-import GlobalApiConfig from "../../../config/GlobalAipConfig";
+import GlobalApiConfig from "../../../config/GlobalApiConfig";
 import {RespDataHandleFilter} from "../../filter/default/weex/RespDataHandleFilter";
 import {buildApiClientProxy} from "./BuildApiClientProxy";
 import {FilterItem} from "../../filter/model/FilterItem";

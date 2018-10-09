@@ -8,7 +8,7 @@ import {ApiClientInterface} from "../../base/ApiClientInterface";
 import {FetchOption, SerializeType} from "../../option/FetchOption";
 import {ReqMethod} from "../../enums/ReqMethod";
 import {DataType} from "../../enums/DataType";
-import GlobalApiConfig from "../../../config/GlobalAipConfig";
+import GlobalApiConfig from "../../../config/GlobalApiConfig";
 import {argumentsResolver} from "../../utils/ArgumnetsResolver";
 import {PostHandlerResult} from "../../filter/model/PostHandlerResult";
 import {isFunction, isNullOrUndefined} from "util";

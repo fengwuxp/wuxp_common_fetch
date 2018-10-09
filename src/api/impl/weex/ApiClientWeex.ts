@@ -2,7 +2,7 @@ import {isFunction, isNullOrUndefined} from "util";
 import {WeexStreamOption} from "../../option/WeexStreamOption";
 import {ApiClientInterface} from "../../base/ApiClientInterface";
 import {stream} from "../../../utils/ExportWeexSdkModel";
-import GlobalApiConfig from "../../../config/GlobalAipConfig";
+import GlobalApiConfig from "../../../config/GlobalApiConfig";
 import {DataType} from "../../enums/DataType";
 import {ReqMethod} from "../../enums/ReqMethod";
 import {isWeb} from "../../../utils/WeexEnvUtil";
