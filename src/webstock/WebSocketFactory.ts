@@ -177,6 +177,7 @@ class DefaultWebSocketHolder implements WebSocketHolder {
 
         ws.onclose = (event: CloseEvent) => {
             console.log("Connection closed.");
+            //解决ios锁屏后 webSocket 连接被关闭的问题
             this.connectionStatus = false;
             lifeCycleHandler.onClose(event, ws);
         };
