@@ -3,7 +3,6 @@ import {WebSocketLifeCycleHandler} from "./WebSocketHandler";
 import {RunEnvType} from "../enums/RunEnvType";
 
 
-
 /**
  * 初始化配置
  */
@@ -91,9 +90,20 @@ class DefaultWebSocketHolder implements WebSocketHolder {
      */
     private allowReconnect: boolean = true;
 
+    /**
+     * 连接状态
+     */
+    private connectionStatus: boolean;
+
 
     constructor(options: InitWebStockOptions) {
         this.options = options;
+        window.onbeforeunload = () => {
+            if (this.webSocket) {
+                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常
+                this.webSocket.close();
+            }
+        }
     }
 
 
@@ -102,7 +112,11 @@ class DefaultWebSocketHolder implements WebSocketHolder {
      * @param {boolean} allowReconnect 是否允许重连
      */
     close = (allowReconnect: boolean = false) => {
-        this.webSocket.close();
+        if (this.webSocket) {
+            this.webSocket.close();
+        }
+        this.webSocket = null;
+        this.connectionStatus = false;
         this.allowReconnect = allowReconnect;
     };
 
@@ -114,7 +128,18 @@ class DefaultWebSocketHolder implements WebSocketHolder {
             console.log("不允许使用该持有者再次连接webSocket！");
             return;
         }
+
+        if (this.connectionStatus === true) {
+            //处于连接状态
+            console.log("webSocket已连接");
+            return;
+        } else {
+            //先关闭连接
+            this.close(true);
+            console.log("webSocket关闭或未连接");
+        }
         this.webSocket = this.createWebSocket();
+        this.connectionStatus = true;
     };
 
 
@@ -144,12 +169,15 @@ class DefaultWebSocketHolder implements WebSocketHolder {
 
         ws.onerror = (event: Event) => {
             console.log("Connection error.");
+            //发生错误
+            this.close(true);
             //重连处理
             lifeCycleHandler.onError(event, this.options);
         };
 
         ws.onclose = (event: CloseEvent) => {
             console.log("Connection closed.");
+            this.connectionStatus = false;
             lifeCycleHandler.onClose(event, ws);
         };
 
