@@ -140,8 +140,7 @@ class DefaultWebSocketHolder implements WebSocketHolder {
         if (this.connectionStatus === WebSocketConnectionStatus.CONNECTING ||
             this.connectionStatus === WebSocketConnectionStatus.RECONNECT) {
             //处于连接状态，将连接状态置为已经连接
-
-            this.connectionStatus = WebSocketConnectionStatus.RECONNECT;
+            this.connectionStatus = WebSocketConnectionStatus.CONNECTING;
             return Promise.resolve(this.connectionStatus);
         } else {
             //先关闭连接
