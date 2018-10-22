@@ -124,7 +124,7 @@ class DefaultWebSocketHolder implements WebSocketHolder {
             this.webSocket.close();
         }
         this.webSocket = null;
-        this.connectionStatus = WebSocketConnectionStatus.NONE;
+        this.connectionStatus = WebSocketConnectionStatus.CLOSE;
         this.allowReconnect = allowReconnect;
     };
 
@@ -139,8 +139,9 @@ class DefaultWebSocketHolder implements WebSocketHolder {
 
         if (this.connectionStatus === WebSocketConnectionStatus.CONNECTING ||
             this.connectionStatus === WebSocketConnectionStatus.RECONNECT) {
-            //处于连接状态
-            // console.log("webSocket已连接");
+            //处于连接状态，将连接状态置为已经连接
+
+            this.connectionStatus = WebSocketConnectionStatus.RECONNECT;
             return Promise.resolve(this.connectionStatus);
         } else {
             //先关闭连接
@@ -151,8 +152,10 @@ class DefaultWebSocketHolder implements WebSocketHolder {
         this.connectionStatus = WebSocketConnectionStatus.WAITING;
         this.webSocket = this.createWebSocket();
         if (oldStatus === WebSocketConnectionStatus.NONE) {
+            //首次连接
             this.connectionStatus = WebSocketConnectionStatus.CONNECTING
         } else {
+            //发生了重连
             this.connectionStatus = WebSocketConnectionStatus.RECONNECT
         }
         return Promise.resolve(this.connectionStatus);
@@ -194,7 +197,7 @@ class DefaultWebSocketHolder implements WebSocketHolder {
         ws.onclose = (event: CloseEvent) => {
             console.log("Connection closed.");
             //解决ios锁屏后 webSocket 连接被关闭的问题
-            this.connectionStatus = WebSocketConnectionStatus.NONE;
+            this.connectionStatus = WebSocketConnectionStatus.CLOSE;
             lifeCycleHandler.onClose(event, ws);
         };
 

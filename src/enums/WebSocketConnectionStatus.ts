@@ -18,6 +18,9 @@ export enum WebSocketConnectionStatus {
     //重新连接
     RECONNECT,
 
+    //被关闭
+    CLOSE
+
 
 
 }
