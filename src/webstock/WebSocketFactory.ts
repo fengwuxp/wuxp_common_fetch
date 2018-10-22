@@ -98,12 +98,16 @@ class DefaultWebSocketHolder implements WebSocketHolder {
 
     constructor(options: InitWebStockOptions) {
         this.options = options;
-        window.onbeforeunload = () => {
-            if (this.webSocket) {
-                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常
-                this.webSocket.close();
+        if (RunEnvType.WEB === options.runEnvType) {
+            //web环境下
+            window.onbeforeunload = () => {
+                if (this.webSocket) {
+                    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常
+                    this.webSocket.close();
+                }
             }
         }
+
     }
 
 
