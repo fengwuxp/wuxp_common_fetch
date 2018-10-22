@@ -4,7 +4,7 @@
  * @create 2018-10-22 10:42
  **/
 
-enum WebSocketConnectionStatus {
+export enum WebSocketConnectionStatus {
 
     //未连接
     NONE,

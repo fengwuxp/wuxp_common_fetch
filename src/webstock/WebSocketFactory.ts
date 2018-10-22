@@ -1,6 +1,8 @@
 import {WebSocketMessageRouter} from "./WebSocketMessageRouter";
 import {WebSocketLifeCycleHandler} from "./WebSocketHandler";
 import {RunEnvType} from "../enums/RunEnvType";
+import {WebSocketConnectionStatus} from "../enums/WebSocketConnectionStatus";
+
 
 
 /**
@@ -60,7 +62,8 @@ export interface WebSocketHolder {
 
     /**
      * 连接
-     * @return Promise<WebSocketConnectionStatus> ：
+     * 返回Promise对象是为了在webSocket 连接断掉的情况下通过接口去恢复一下数据
+     * @return Promise<WebSocketConnectionStatus>
      */
     connection: () => Promise<WebSocketConnectionStatus>;
 
