@@ -60,8 +60,9 @@ export interface WebSocketHolder {
 
     /**
      * 连接
+     * @return Promise<WebSocketConnectionStatus> ：
      */
-    connection: () => void;
+    connection: () => Promise<WebSocketConnectionStatus>;
 
 
     /**
@@ -93,7 +94,7 @@ class DefaultWebSocketHolder implements WebSocketHolder {
     /**
      * 连接状态
      */
-    private connectionStatus: boolean;
+    private connectionStatus: WebSocketConnectionStatus = WebSocketConnectionStatus.NONE;
 
 
     constructor(options: InitWebStockOptions) {
@@ -120,30 +121,38 @@ class DefaultWebSocketHolder implements WebSocketHolder {
             this.webSocket.close();
         }
         this.webSocket = null;
-        this.connectionStatus = false;
+        this.connectionStatus = WebSocketConnectionStatus.NONE;
         this.allowReconnect = allowReconnect;
     };
 
     /**
      * 连接
      */
-    connection = () => {
+    connection = (): Promise<WebSocketConnectionStatus> => {
         if (!this.allowReconnect) {
             console.log("不允许使用该持有者再次连接webSocket！");
-            return;
+            return Promise.reject(this.connectionStatus);
         }
 
-        if (this.connectionStatus === true) {
+        if (this.connectionStatus === WebSocketConnectionStatus.CONNECTING ||
+            this.connectionStatus === WebSocketConnectionStatus.RECONNECT) {
             //处于连接状态
-            console.log("webSocket已连接");
-            return;
+            // console.log("webSocket已连接");
+            return Promise.resolve(this.connectionStatus);
         } else {
             //先关闭连接
             this.close(true);
             console.log("webSocket关闭或未连接");
         }
+        const oldStatus = this.connectionStatus;
+        this.connectionStatus = WebSocketConnectionStatus.WAITING;
         this.webSocket = this.createWebSocket();
-        this.connectionStatus = true;
+        if (oldStatus === WebSocketConnectionStatus.NONE) {
+            this.connectionStatus = WebSocketConnectionStatus.CONNECTING
+        } else {
+            this.connectionStatus = WebSocketConnectionStatus.RECONNECT
+        }
+        return Promise.resolve(this.connectionStatus);
     };
 
 
@@ -182,7 +191,7 @@ class DefaultWebSocketHolder implements WebSocketHolder {
         ws.onclose = (event: CloseEvent) => {
             console.log("Connection closed.");
             //解决ios锁屏后 webSocket 连接被关闭的问题
-            this.connectionStatus = false;
+            this.connectionStatus = WebSocketConnectionStatus.NONE;
             lifeCycleHandler.onClose(event, ws);
         };
 
