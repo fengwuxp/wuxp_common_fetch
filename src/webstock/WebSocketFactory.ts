@@ -4,7 +4,6 @@ import {RunEnvType} from "../enums/RunEnvType";
 import {WebSocketConnectionStatus} from "../enums/WebSocketConnectionStatus";
 
 
-
 /**
  * 初始化配置
  */
@@ -132,8 +131,8 @@ class DefaultWebSocketHolder implements WebSocketHolder {
      * 连接
      */
     connection = (): Promise<WebSocketConnectionStatus> => {
-        if (!this.allowReconnect) {
-            console.log("不允许使用该持有者再次连接webSocket！");
+        if (this.allowReconnect===false || this.connectionStatus === WebSocketConnectionStatus.WAITING) {
+            console.log("连接等待中或不允许该持有者再次连接webSocket");
             return Promise.reject(this.connectionStatus);
         }
 
