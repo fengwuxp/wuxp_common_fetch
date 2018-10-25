@@ -72,6 +72,12 @@ export interface WebSocketHolder {
      * @param {boolean} allowReconnect
      */
     close: (allowReconnect?: boolean) => void;
+
+
+    /**
+     * 获取连接状态
+     */
+    getConnectionStatus: () => WebSocketConnectionStatus;
 }
 
 
@@ -131,7 +137,7 @@ class DefaultWebSocketHolder implements WebSocketHolder {
      * 连接
      */
     connection = (): Promise<WebSocketConnectionStatus> => {
-        if (this.allowReconnect===false || this.connectionStatus === WebSocketConnectionStatus.WAITING) {
+        if (this.allowReconnect === false || this.connectionStatus === WebSocketConnectionStatus.WAITING) {
             console.log("连接等待中或不允许该持有者再次连接webSocket");
             return Promise.reject(this.connectionStatus);
         }
@@ -158,6 +164,8 @@ class DefaultWebSocketHolder implements WebSocketHolder {
         }
         return Promise.resolve(this.connectionStatus);
     };
+
+    getConnectionStatus = (): WebSocketConnectionStatus => this.connectionStatus;
 
 
     private createWebSocket = () => {
