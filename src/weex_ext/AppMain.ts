@@ -3,7 +3,7 @@ import {WeexModule} from "weex";
 
 
 if (isWeb()) {
-    const appMainModule:any = {
+    const appMainModule: any = {
 
         /**
          * 显示加载进度
@@ -58,7 +58,7 @@ if (isWeb()) {
         toMine(success = () => {
         }, failre = () => {
         }) {
-            console.log("浏览器暂不支持改方法");
+            console.log("浏览器暂不支持toMine方法");
         },
 
         /**
@@ -69,7 +69,7 @@ if (isWeb()) {
         toCart(success = () => {
         }, failre = () => {
         }) {
-            console.log("浏览器暂不支持改方法");
+            console.log("浏览器暂不支持toCart方法");
         },
 
         /**
@@ -80,7 +80,7 @@ if (isWeb()) {
         toCategory(success = () => {
         }, failre = () => {
         }) {
-            console.log("浏览器暂不支持改方法");
+            console.log("浏览器暂不支持toCategory方法");
         },
 
         /**
@@ -91,7 +91,7 @@ if (isWeb()) {
         toHome(success = () => {
         }, failre = () => {
         }) {
-            console.log("浏览器暂不支持改方法");
+            console.log("浏览器暂不支持toHome方法");
         },
 
         /**
@@ -102,7 +102,7 @@ if (isWeb()) {
         toOrder(success = () => {
         }, failre = () => {
         }) {
-            console.log("浏览器暂不支持改方法");
+            console.log("浏览器暂不支持 toOrder 方法");
         },
 
         /**
@@ -114,7 +114,7 @@ if (isWeb()) {
         share(params = {}, success = () => {
         }, failre = () => {
         }) {
-            console.log("浏览器暂不支持改方法");
+            console.log("浏览器暂不支持 share 方法");
         },
 
         /**
@@ -127,7 +127,18 @@ if (isWeb()) {
         callPhone(flag, mobilePhone, succ = () => {
         }, failre = () => {
         }) {
-            console.log("浏览器暂不支持改方法");
+            console.log("浏览器暂不支持 callPhone 方法");
+        },
+
+        /**
+         * 选择小区
+         * @param success
+         * @param failre
+         */
+        chooseCommunity(success = () => {
+        }, failre = () => {
+        }) {
+            console.log("浏览器暂不支持 chooseCommunity 方法");
         }
 
     };
