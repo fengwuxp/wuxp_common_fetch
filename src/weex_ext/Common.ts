@@ -119,6 +119,14 @@ if (isWeb()) {
             return callback(true);
         },
 
+        /**
+         * 获取屏幕相关信息
+         * @param success
+         */
+        getScreenLayoutInfo(success=()=>{} ){
+            console.log("web环境暂不支持 getScreenLayoutInfo");
+        }
+
     };
     console.log("注册自定义模块 common");
     weex.registerModule('common', commonModal);
