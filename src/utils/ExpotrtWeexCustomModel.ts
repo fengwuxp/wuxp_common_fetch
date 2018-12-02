@@ -16,17 +16,17 @@ if (process.env.IS_WEB) {
 }
 
 
-const broadcast = weex.requireModule("broadcast");  //自定义广播对象
-const cache = weex.requireModule("cache");
-const appMain = weex.requireModule("appMain");
-const imageLoader = weex.requireModule("image");
-const msgPush = weex.requireModule("msgPush");
-const qrcode = weex.requireModule("qrcode");
-const common = weex.requireModule("common");
-const appUpdate = weex.requireModule("appUpdate");
-const photo = weex.requireModule("photo");
-const location = weex.requireModule("location");
-const thirdLogin = weex.requireModule("thirdLogin");
+const broadcast: any = weex.requireModule("broadcast");  //自定义广播对象
+const cache: any = weex.requireModule("cache");
+const appMain: any = weex.requireModule("appMain");
+const imageLoader: any = weex.requireModule("image");
+const msgPush: any = weex.requireModule("msgPush");
+const qrcode: any = weex.requireModule("qrcode");
+const common: any = weex.requireModule("common");
+const appUpdate: any = weex.requireModule("appUpdate");
+const photo: any = weex.requireModule("photo");
+const location: any = weex.requireModule("location");
+const thirdLogin: any = weex.requireModule("thirdLogin");
 
 //此处为了导入地方能够进行结构赋值，不能使用 export default
 
