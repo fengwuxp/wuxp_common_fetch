@@ -1,5 +1,6 @@
 import {isNullOrUndefined, isString} from "util";
 import StringUtils from "../../../utils/StringUtils";
+import {formatterDate} from "../../../utils/FormatWeexUtils";
 // import md5 from "md5";
 const md5 = require("md5")
 
@@ -22,10 +23,21 @@ export function apiSign(fields: Array<string>, params: any, clientSecret: string
             // console.warn("参与签名的参数：" + item + " 未传入!");
             throw new Error("参与签名的参数：" + item + " 未传入或值无效!");
         }
+
+        if (param.constructor === Date) {
+            //时间类型
+            let dateForString = formatterDate(param);
+
+            //转为时间戳
+            params[item] = (param as Date).getTime();
+
+            param = dateForString;
+        }
+
         value += `${item}=${param}&`;
     });
     //加入clientId 、clientSecret 时间戳参与签名
-    value += `clientId=${params.clientId }&clientSecret=${clientSecret}&timestamp=${ params.timestamp}`;
+    value += `clientId=${params.clientId}&clientSecret=${clientSecret}&timestamp=${params.timestamp}`;
 
     let channelCode: string = params.channelCode;
     if (StringUtils.hasText(channelCode)) {

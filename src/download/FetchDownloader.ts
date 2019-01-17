@@ -5,7 +5,7 @@ import {isNullOrUndefined} from "util";
 import ApiClientFetch from "../api/impl/es/ApiClientFetch";
 
 
-const apiClient = new ApiClientFetch();
+const apiClient = new ApiClientFetch(null, null);
 
 
 /**

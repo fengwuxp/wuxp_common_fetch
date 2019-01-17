@@ -47,7 +47,7 @@ export default abstract class WebSocketAbstractRouter implements WebSocketMessag
      * @param event
      * @param socket
      */
-    onClose(event: CloseEvent, socket: WebSocket) {
+    onClose = (event: CloseEvent, socket: WebSocket) => {
         window.clearTimeout(this.keepHeartbeatTimerId);
     };
 
