@@ -1,5 +1,3 @@
-
-
 let WEEX_ENV_PLATFORM_NAME = weex.config.env.platform.toLocaleLowerCase();
 
 /**
@@ -36,9 +34,20 @@ const isIphoneX = (): boolean => {
     return isIos() && weex.config.env.deviceHeight === 2436;
 };
 
+/**
+ * 是否为 iphoneXR
+ * @return {boolean}
+ */
+const isIphoneXR = (): boolean => {
+
+    return isIos() && weex.config.env.deviceHeight === 1792;
+};
+
+
 export {
     isAndroid,
     isWeb,
     isIos,
-    isIphoneX
+    isIphoneX,
+    isIphoneXR
 }
