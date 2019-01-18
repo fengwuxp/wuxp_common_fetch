@@ -40,7 +40,7 @@ const isIphoneX = (): boolean => {
  */
 const isIphoneXR = (): boolean => {
 
-    return isIos() && weex.config.env.deviceHeight === 1792;
+    return isIos() && weex.config.env.deviceHeight === 1624;
 };
 
 
